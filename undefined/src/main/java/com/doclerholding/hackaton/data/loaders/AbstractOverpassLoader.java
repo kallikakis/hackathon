@@ -90,14 +90,16 @@ abstract public class AbstractOverpassLoader implements IFilterType {
 					
 				}
 			}
-			if ("way".equals(itemType)) {
-				try {
-				model.setLocation(new GeoPoint(item.get("center").get("lat").asDouble(), item.get("center").get("lon").asDouble()));
-				model.setName(item.get("tags").get("name").asText());
-				} catch (NullPointerException e) {
-					// Missing important data
-					continue;
+			try {
+				if ("way".equals(itemType)) {
+					model.setLocation(new GeoPoint(item.get("center").get("lat").asDouble(), item.get("center").get("lon").asDouble()));
+				} else if ("node".equals("itemType")) {
+					model.setLocation(new GeoPoint(item.get("lat").asDouble(), item.get("lon").asDouble()));
 				}
+				model.setName(item.get("tags").get("name").asText());
+			} catch (NullPointerException e) {
+				// Missing important data
+				continue;
 			}
 			//repository.index(model);
 		}
