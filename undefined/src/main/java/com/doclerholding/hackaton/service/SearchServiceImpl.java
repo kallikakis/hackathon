@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.elasticsearch.core.query.Criteria;
@@ -17,6 +18,8 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.stereotype.Component;
+
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 /**
  * Created by nikolaos.kallikakis on 11/03/17.
@@ -32,7 +35,24 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public List<FilterCriteria> getFilterCriteria() {
-		return this.dataTypes.stream().map(x -> new FilterCriteria(x.dataType(), x.distanceFilter())).collect(Collectors.toList());
+		return this.dataTypes.stream().filter(x -> x.distanceFilter()).map(x -> new FilterCriteria(x.dataType())).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Poi> getPois(List<String> filters) {
+		Criteria criteria = null;
+
+		for(String filterName: filters){
+			if(criteria == null){
+				criteria = new Criteria("type").is(filterName);
+			}else{
+				criteria.and("type").is(filterName);
+			}
+		}
+		CriteriaQuery query = new CriteriaQuery(criteria);
+		query.setPageable(new PageRequest(0, 50));
+		return template.queryForList(query, Poi.class);
+
 	}
 
 	public List<Poi> getPoisWithin(double latitude, double longitude, String distance){
@@ -41,15 +61,15 @@ public class SearchServiceImpl implements SearchService {
 		return template.queryForList(searchQuery, Poi.class);
 	}
 
-	public List<Poi> getPoisWithinWithFilters(double latitude, double longitude, String distance, List<FilterCriteria> filters){
+	public List<Poi> getPoisWithinWithFilters(double latitude, double longitude, String distance, List<String> filters){
 
 		Criteria criteria = null;
 
-		for(FilterCriteria filterCriteria: filters){
+		for(String filterName: filters){
 			if(criteria == null){
-				criteria = new Criteria("type").is(filterCriteria.getFilterType());
+				criteria = new Criteria("type").is(filterName);
 			}else{
-				criteria.and("type").is(filterCriteria.getFilterType());
+				criteria.and("type").is(filterName);
 			}
 		}
 
