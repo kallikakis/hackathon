@@ -21,4 +21,5 @@ public class LineLoader extends AbstractLineLoader {
 		JsonNode rootNode = mapper.readTree(new File(dirURL.toURI()));
 		addPoint(rootNode, "stop");
 	}
+
 }

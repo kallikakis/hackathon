@@ -23,4 +23,5 @@ public class ParkSpotsLoader extends AbstractLineLoader {
 		JsonNode rootNode = mapper.readTree(new File(dirURL.toURI()));
 		addPoint(rootNode, "park_spot");
 	}
+
 }
