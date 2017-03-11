@@ -51,7 +51,7 @@ public class LineLoader {
             //Model props
             JsonNode id = props.path("id");
             JsonNode name = props.path("name");
-            model.setId(id.asText());
+            model.setId("stop:" + id.asText());
             model.setName(name.asText());
             model.setType("stop");
 

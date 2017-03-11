@@ -49,7 +49,7 @@ public class ParkSpotsLoader {
             JsonNode props = f.path("properties");
             JsonNode id = props.path("id");
             JsonNode name = props.path("name");
-            model.setId(id.asText());
+            model.setId("parking:" + id.asText());
             model.setName(name.asText());
             model.setType("park_spot");
             //repository.index(model);
