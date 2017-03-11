@@ -4,7 +4,6 @@ import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.data.repository.PoiRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.stereotype.Component;
@@ -21,14 +20,14 @@ import java.util.List;
  * Created by claudiu.arba on 11/03/17.
  */
 @Component
-public class LineLoader {
+public class ParkSpotsLoader {
 
     @Autowired
     PoiRepository repository;
 
     @PostConstruct
     protected void loadData() throws URISyntaxException, IOException {
-        URL dirURL = Thread.currentThread().getContextClassLoader().getResource("stops.json");
+        URL dirURL = Thread.currentThread().getContextClassLoader().getResource("park_spots.json");
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(new File(dirURL.toURI()));
 
@@ -48,13 +47,11 @@ public class LineLoader {
                 model.setLocation(g);
             }
             JsonNode props = f.path("properties");
-            //Model props
             JsonNode id = props.path("id");
             JsonNode name = props.path("name");
             model.setId(id.asText());
             model.setName(name.asText());
-            model.setType("stop");
-
+            model.setType("park_spot");
             //repository.index(model);
             data.add(model);
         }
