@@ -10,6 +10,7 @@ import java.util.List;
 public interface SearchService {
 
 	List<FilterCriteria> getFilterCriteria();
+	List<Poi> getPois(List<String> filters);
 	List<Poi> getPoisWithin(double latitude, double longitude, String distance);
-	List<Poi> getPoisWithinWithFilters(double latitude, double longitude, String distance, List<FilterCriteria> filters);
+	List<Poi> getPoisWithinWithFilters(double latitude, double longitude, String distance, List<String> filters);
 }
