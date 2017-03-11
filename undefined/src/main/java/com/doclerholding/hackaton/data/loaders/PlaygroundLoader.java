@@ -5,19 +5,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Qualifier("dataTypes")
-public class TheatreLoader extends AbstractOverpassLoader {
+public class PlaygroundLoader extends AbstractOverpassLoader {
 
-	public TheatreLoader() {
-		super("amenity", "theatre");
+	public PlaygroundLoader() {
+		super("leisure", "playground");
 	}
 
 	@Override
 	public String filterType() {
-		return "theatre";
+		return "playgound";
 	}
 
 	public static void main(String[] args) {
-		TheatreLoader loader = new TheatreLoader();
+		PlaygroundLoader loader = new PlaygroundLoader();
 		loader.load(true);
 	}
 }
