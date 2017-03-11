@@ -12,7 +12,7 @@ public class ParkLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "park";
 	}
 

@@ -12,7 +12,7 @@ public class LibraryLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "library";
 	}
 

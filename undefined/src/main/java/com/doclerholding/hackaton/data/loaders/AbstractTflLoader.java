@@ -1,20 +1,19 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+
 import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.data.repository.PoiRepository;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by maxim on 3/11/2017.
  */
-@Component
-public abstract class AbstractLineLoader {
+public abstract class AbstractTflLoader implements IDataType {
 
 	@Autowired
 	private PoiRepository poiRepository;

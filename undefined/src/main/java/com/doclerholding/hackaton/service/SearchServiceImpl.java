@@ -32,7 +32,7 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public List<FilterCriteria> getFilterCriteria() {
-		return this.dataTypes.stream().map(x -> new FilterCriteria(x.filterType(), x.distanceFilter())).collect(Collectors.toList());
+		return this.dataTypes.stream().map(x -> new FilterCriteria(x.dataType(), x.distanceFilter())).collect(Collectors.toList());
 	}
 
 	public List<Poi> getPoisWithin(double latitude, double longitude, String distance){

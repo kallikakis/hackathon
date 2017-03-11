@@ -12,7 +12,7 @@ public class SwimmingPoolLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "swimming";
 	}
 
