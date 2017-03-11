@@ -9,20 +9,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.stereotype.Component;
 
 import com.doclerholding.hackaton.data.model.Poi;
+import com.doclerholding.hackaton.data.repository.PoiRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Component
 abstract public class AbstractOverpassLoader implements IFilterType {
 	private static final long countryId = 3602171347l;
 	private static final String ID_PREFIX = "OSM:";
 	private static final String OVERPASS_API="http://overpass-api.de/api/interpreter";
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
-	
+
+	@Autowired
+	private PoiRepository poiRepository;
+
 	protected final String type;
 	protected final String value;
 	
@@ -101,7 +108,7 @@ abstract public class AbstractOverpassLoader implements IFilterType {
 				// Missing important data
 				continue;
 			}
-			//repository.index(model);
+			this.poiRepository.index(model);
 		}
 	}
 	
