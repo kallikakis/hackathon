@@ -1,5 +1,6 @@
 package com.doclerholding.hackaton.service;
 
+import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.service.model.FilterCriteria;
 import java.util.List;
 
@@ -9,4 +10,6 @@ import java.util.List;
 public interface SearchService {
 
 	List<FilterCriteria> getFilterCriteria();
+	List<Poi> getPoisWithin(double latitude, double longitude, String distance);
+	List<Poi> getPoisWithinWithFilters(double latitude, double longitude, String distance, List<FilterCriteria> filters);
 }
