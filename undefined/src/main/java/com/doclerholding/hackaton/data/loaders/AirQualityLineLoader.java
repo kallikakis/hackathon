@@ -47,6 +47,7 @@ public class AirQualityLineLoader {
 			airQualityModel.setId(props.path("id").asText());
 			airQualityModel.setName(props.path("name").asText());
 			data.add(airQualityModel);
+			//this.poiRepository.index(airQualityModel);
 		}
 	}
 
