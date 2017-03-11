@@ -15,20 +15,14 @@ import org.springframework.web.client.RestTemplate;
  */
 @Controller
 @RequestMapping("/parking/detail")
-public class ParkingSpotsController {
+public class ParkingSpotsController extends PublicDataDetailedController<ParkSpotDetail> {
 
-	@Autowired
-	RestTemplate restTemplate;
+	public ParkingSpotsController(Class<ParkSpotDetail> typeParameterClass) {
+		super(typeParameterClass);
+	}
 
-	@RequestMapping("/{id}")
-	public ParkSpotDetail parkingSpotDetail(@PathVariable String id) throws JsonProcessingException {
-
-		JsonNode node = restTemplate.getForObject("https://api.tfl.lu/v1/Occupancy/CarPark/{id}", JsonNode.class, id);
-		JsonNode props = node.path("properties");
-
-		ObjectMapper mapper = new ObjectMapper();
-		ParkSpotDetail spotDetail = mapper.treeToValue(props, ParkSpotDetail.class);
-
-		return spotDetail;
+	@Override
+	protected ParkSpotDetail getDetailsById(@PathVariable String id) throws JsonProcessingException {
+		return getDetailedData(id, "Occupancy/CarPark/{id}");
 	}
 }
