@@ -17,8 +17,8 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/parking/detail")
 public class ParkingSpotsController extends PublicDataDetailedController<ParkSpotDetail> {
 
-	public ParkingSpotsController(Class<ParkSpotDetail> typeParameterClass) {
-		super(typeParameterClass);
+	public ParkingSpotsController() {
+		super(ParkSpotDetail.class);
 	}
 
 	@Override
