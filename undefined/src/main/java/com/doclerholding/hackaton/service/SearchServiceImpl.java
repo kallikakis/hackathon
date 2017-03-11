@@ -1,8 +1,10 @@
 package com.doclerholding.hackaton.service;
 
+import com.doclerholding.hackaton.data.loaders.IDataType;
 import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.service.model.FilterCriteria;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,13 @@ public class SearchServiceImpl implements SearchService {
 
 	@Autowired
 	private ElasticsearchTemplate template;
+	
+	@Autowired
+	private List<IDataType> dataTypes;
 
 	@Override
 	public List<FilterCriteria> getFilterCriteria() {
-		// TODO: This needs to come from somewhere, DB??
-
-		return null;
+		return this.dataTypes.stream().map(x -> new FilterCriteria(x.filterType(), x.distanceFilter())).collect(Collectors.toList());
 	}
 
 	public List<Poi> getPoisWithin(double latitude, double longitude, String distance){
@@ -44,9 +47,9 @@ public class SearchServiceImpl implements SearchService {
 
 		for(FilterCriteria filterCriteria: filters){
 			if(criteria == null){
-				criteria = new Criteria("type").is(filterCriteria.getFilterName());
+				criteria = new Criteria("type").is(filterCriteria.getFilterType());
 			}else{
-				criteria.and("type").is(filterCriteria.getFilterName());
+				criteria.and("type").is(filterCriteria.getFilterType());
 			}
 		}
 

@@ -1,5 +1,10 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+@Qualifier("dataTypes")
 public class SwimmingPoolLoader extends AbstractOverpassLoader {
 
 	public SwimmingPoolLoader() {
@@ -7,8 +12,8 @@ public class SwimmingPoolLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterName() {
-		return "Swimming Pool";
+	public String filterType() {
+		return "swimming";
 	}
 
 	public static void main(String[] args) {

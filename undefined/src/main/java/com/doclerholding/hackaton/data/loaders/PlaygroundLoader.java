@@ -1,5 +1,10 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+@Qualifier("dataTypes")
 public class PlaygroundLoader extends AbstractOverpassLoader {
 
 	public PlaygroundLoader() {
@@ -7,8 +12,8 @@ public class PlaygroundLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterName() {
-		return "Playgound";
+	public String filterType() {
+		return "playgound";
 	}
 
 	public static void main(String[] args) {

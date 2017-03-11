@@ -1,5 +1,10 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+@Qualifier("dataTypes")
 public class AtmLoader extends AbstractOverpassLoader {
 
 	public AtmLoader() {
@@ -7,7 +12,7 @@ public class AtmLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterName() {
+	public String filterType() {
 		return "ATM";
 	}
 
