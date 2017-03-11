@@ -1,0 +1,8 @@
+*.DS_Store
+/.metadata/
+.idea/
+/*/.*
+/*/target/
+/*/*.iml
+*.log
+*.lock
