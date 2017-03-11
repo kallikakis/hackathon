@@ -1,6 +1,7 @@
 package com.doclerholding.hackaton.data.loaders;
 
 public interface IDataType {
-	String filterType();
+	String dataType();
 	boolean distanceFilter();
+	void load(boolean forceDownload);
 }
