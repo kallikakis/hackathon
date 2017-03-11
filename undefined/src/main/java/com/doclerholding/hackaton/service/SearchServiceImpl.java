@@ -35,7 +35,7 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public List<FilterCriteria> getFilterCriteria() {
-		return this.dataTypes.stream().map(x -> new FilterCriteria(x.dataType(), x.distanceFilter())).collect(Collectors.toList());
+		return this.dataTypes.stream().filter(x -> x.distanceFilter()).map(x -> new FilterCriteria(x.dataType())).collect(Collectors.toList());
 	}
 
 	@Override
