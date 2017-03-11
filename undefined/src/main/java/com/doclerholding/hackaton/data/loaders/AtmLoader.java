@@ -12,7 +12,7 @@ public class AtmLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "ATM";
 	}
 

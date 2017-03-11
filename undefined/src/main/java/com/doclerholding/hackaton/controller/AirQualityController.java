@@ -1,7 +1,9 @@
 package com.doclerholding.hackaton.controller;
 
 import com.doclerholding.hackaton.data.model.airquality.AirQualityDetails;
+import com.doclerholding.hackaton.service.DetailsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/airquality/details")
-public class AirQualityController extends PublicDataDetailedController<AirQualityDetails> {
+public class AirQualityController {
 
-	public AirQualityController() {
-		super(AirQualityDetails.class);
-	}
+	@Autowired
+	DetailsService detailsService;
 
-	@Override
-	protected AirQualityDetails getDetailsById(@PathVariable String id) throws JsonProcessingException {
-		return getDetailedData(id, "Weather/Airquality/{id}");
+	@RequestMapping("/{id}")
+	public AirQualityDetails getDetailsById(@PathVariable String id) throws JsonProcessingException {
+		return detailsService.getAirQualityDetail(id);
 	}
 }

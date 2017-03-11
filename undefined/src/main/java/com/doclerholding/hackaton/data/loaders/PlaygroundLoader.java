@@ -12,7 +12,7 @@ public class PlaygroundLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "playgound";
 	}
 

@@ -1,20 +1,23 @@
 package com.doclerholding.hackaton.data.model.airquality;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by maxim on 3/11/2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AirQualityDetails {
-	private String id; //id: "aev:Beidweiler",
-	private String name; //name: "Beidweiler",
-	private Double temp; //temp: 12.3,
-	private Double pm10; //pm10: 7,
-	private Double no2; //no2: 9.1,
-	private Double o3; //o3: 76,
-	private Double so2; //so2: 1.3,
-	private Double co; //co: null,
+	private String id;
+	private String name;
+	private Double temp;
+	private Double pm10;
+	private Double no2;
+	private Double o3;
+	private Double so2;
+	private Double co;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private AirQualityIndexEnum index = AirQualityIndexEnum.valueOf(this.pm10, this.no2, this.o3, this.so2, this.co);
 
 	public AirQualityDetails() {
 	}
@@ -82,4 +85,9 @@ public class AirQualityDetails {
 	public void setCo(Double co) {
 		this.co = co;
 	}
+
+	public AirQualityIndexEnum getIndex() {
+		return this.index;
+	}
+
 }

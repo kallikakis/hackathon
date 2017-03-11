@@ -12,7 +12,7 @@ public class CinemaLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "cinema";
 	}
 

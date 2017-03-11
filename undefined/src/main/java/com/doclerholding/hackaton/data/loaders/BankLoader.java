@@ -12,7 +12,7 @@ public class BankLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "bank";
 	}
 

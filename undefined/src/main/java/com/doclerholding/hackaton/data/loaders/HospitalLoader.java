@@ -12,7 +12,7 @@ public class HospitalLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterType() {
+	public String dataType() {
 		return "hospital";
 	}
 
