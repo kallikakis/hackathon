@@ -1,7 +1,17 @@
+var map;
+
+var onchangeEvent = function(){
+	jQuery('.checkbox').each(function () {
+		var checkbox = (this.checked ? jQuery(this) : null);
+		if (checkbox != null) {
+			console.log(checkbox.attr("id"));
+		}
+	});
+};
 
 function initMap() {
 
-  var map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
     center: {lat: 49.749601, lng: 6.157497},
     mapTypeId: google.maps.MapTypeId.ROADMAP
