@@ -21,4 +21,25 @@ public class IndexController {
 
 		return "index";
 	}
+
+	@RequestMapping("/locator")
+	public String locator(ModelMap modelMap) {
+		modelMap.addAttribute("filteringCriteria", searchService.getFilterCriteria());
+
+		return "locator";
+	}
+
+	@RequestMapping("/airQuality")
+	public String airQuality(ModelMap modelMap) {
+		modelMap.addAttribute("filteringCriteria", searchService.getFilterCriteria());
+
+		return "airQuality";
+	}
+
+	@RequestMapping("/live")
+	public String live(ModelMap modelMap) {
+		modelMap.addAttribute("filteringCriteria", searchService.getFilterCriteria());
+
+		return "live";
+	}
 }

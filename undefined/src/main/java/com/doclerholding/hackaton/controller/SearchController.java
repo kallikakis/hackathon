@@ -23,11 +23,6 @@ public class SearchController {
 	@Autowired
 	private SearchService searchService;
 
-	@RequestMapping(path="/search/criterias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FilterCriteria> criterias() {
-		return this.searchService.getFilterCriteria();
-	}
-
 	@RequestMapping(path="/search/pois", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Poi> getPois(@RequestParam(required = false) Integer distance, @RequestParam(required = false) String[] filters) {
 		return this.searchService.getPois(Arrays.asList(filters));
