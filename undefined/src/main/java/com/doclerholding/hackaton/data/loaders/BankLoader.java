@@ -1,14 +1,19 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+@Qualifier("dataTypes")
 public class BankLoader extends AbstractOverpassLoader {
 
 	public BankLoader() {
-		super("leisure", "swimming_pool");
+		super("amenity", "bank");
 	}
 
 	@Override
-	public String filterName() {
-		return "Swimming pool";
+	public String filterType() {
+		return "bank";
 	}
 
 	public static void main(String[] args) {
