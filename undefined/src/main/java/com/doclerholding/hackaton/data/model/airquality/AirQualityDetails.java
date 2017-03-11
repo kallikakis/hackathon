@@ -1,8 +1,11 @@
 package com.doclerholding.hackaton.data.model.airquality;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by maxim on 3/11/2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AirQualityDetails {
 	private String id; //id: "aev:Beidweiler",
 	private String name; //name: "Beidweiler",
