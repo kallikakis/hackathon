@@ -27,7 +27,7 @@ public abstract class AbstractTflLoader implements IDataType {
 			JsonNode geometry = f.path("geometry");
 			if (geometry.path("type").asText().equals("Point")) {
 				JsonNode coordinates = geometry.path("coordinates");
-				poi.setLocation(new GeoPoint(coordinates.path(0).asDouble(), coordinates.path(1).asDouble()));
+				poi.setLocation(new GeoPoint(coordinates.path(1).asDouble(), coordinates.path(0).asDouble()));
 			}
 			JsonNode props = f.path("properties");
 			poi.setId(props.path("id").asText());
