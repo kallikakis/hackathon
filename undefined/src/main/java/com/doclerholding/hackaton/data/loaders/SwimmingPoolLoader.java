@@ -3,12 +3,12 @@ package com.doclerholding.hackaton.data.loaders;
 public class SwimmingPoolLoader extends AbstractOverpassLoader {
 
 	public SwimmingPoolLoader() {
-		super("amenity", "theatre");
+		super("leisure", "swimming_pool");
 	}
 
 	@Override
 	public String filterName() {
-		return "Theatre";
+		return "Swimming Pool";
 	}
 
 	public static void main(String[] args) {

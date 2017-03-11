@@ -3,12 +3,12 @@ package com.doclerholding.hackaton.data.loaders;
 public class AtmLoader extends AbstractOverpassLoader {
 
 	public AtmLoader() {
-		super("amenity", "theatre");
+		super("amenity", "atm");
 	}
 
 	@Override
 	public String filterName() {
-		return "Theatre";
+		return "ATM";
 	}
 
 	public static void main(String[] args) {

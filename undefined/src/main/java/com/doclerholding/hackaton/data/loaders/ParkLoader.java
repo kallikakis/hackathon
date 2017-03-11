@@ -1,18 +1,18 @@
 package com.doclerholding.hackaton.data.loaders;
 
-public class BankLoader extends AbstractOverpassLoader {
+public class ParkLoader extends AbstractOverpassLoader {
 
-	public BankLoader() {
-		super("amenity", "bank");
+	public ParkLoader() {
+		super("leisure", "park");
 	}
 
 	@Override
 	public String filterName() {
-		return "Bank";
+		return "Park";
 	}
 
 	public static void main(String[] args) {
-		BankLoader loader = new BankLoader();
+		ParkLoader loader = new ParkLoader();
 		loader.load(true);
 	}
 }
