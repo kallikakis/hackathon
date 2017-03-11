@@ -19,6 +19,18 @@ public class Poi {
 
     private GeoPoint location;
 
+    public Poi() {
+        super();
+    }
+
+    public Poi(String id, String name, String type, GeoPoint location) {
+        this();
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.location = location;
+    }
+
     public String getId() {
         return id;
     }
