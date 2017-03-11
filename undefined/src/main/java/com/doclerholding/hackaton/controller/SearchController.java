@@ -19,9 +19,4 @@ public class SearchController {
 
 	@Autowired
 	private SearchService searchService;
-
-	@RequestMapping(path="/search/criterias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FilterCriteria> criterias() {
-		return this.searchService.getFilterCriteria();
-	}
 }
