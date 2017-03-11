@@ -1,5 +1,10 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+@Qualifier("dataTypes")
 public class CinemaLoader extends AbstractOverpassLoader {
 
 	public CinemaLoader() {
@@ -7,8 +12,8 @@ public class CinemaLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterName() {
-		return "Cinema";
+	public String filterType() {
+		return "cinema";
 	}
 
 	public static void main(String[] args) {

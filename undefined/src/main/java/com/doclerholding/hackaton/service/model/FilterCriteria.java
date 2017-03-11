@@ -1,20 +1,24 @@
 package com.doclerholding.hackaton.service.model;
 
+import java.io.Serializable;
+
 /**
  * Created by nikolaos.kallikakis on 11/03/17.
  */
-public class FilterCriteria {
+public class FilterCriteria implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private String filterName;
 	private String filterType;
 	private boolean distanceFilterSupported;
 
-	public String getFilterName() {
-		return filterName;
+	public FilterCriteria() {
+		super();
 	}
 
-	public void setFilterName(String filterName) {
-		this.filterName = filterName;
+	public FilterCriteria(String filterType, boolean distanceFilterSupported) {
+		super();
+		this.filterType = filterType;
+		this.distanceFilterSupported = distanceFilterSupported;
 	}
 
 	public String getFilterType() {

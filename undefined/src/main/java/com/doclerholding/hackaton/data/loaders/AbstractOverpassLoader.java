@@ -19,8 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Component
-abstract public class AbstractOverpassLoader implements IFilterType {
+abstract public class AbstractOverpassLoader implements IDataType {
 	private static final long countryId = 3602171347l;
 	private static final String ID_PREFIX = "OSM:";
 	private static final String OVERPASS_API="http://overpass-api.de/api/interpreter";
@@ -120,5 +119,10 @@ abstract public class AbstractOverpassLoader implements IFilterType {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean distanceFilter() {
+		return true;
 	}
 }

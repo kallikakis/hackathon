@@ -1,5 +1,10 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
+@Qualifier("dataTypes")
 public class HospitalLoader extends AbstractOverpassLoader {
 
 	public HospitalLoader() {
@@ -7,8 +12,8 @@ public class HospitalLoader extends AbstractOverpassLoader {
 	}
 
 	@Override
-	public String filterName() {
-		return "Hospital";
+	public String filterType() {
+		return "hospital";
 	}
 
 	public static void main(String[] args) {
