@@ -41,6 +41,7 @@ abstract public class AbstractOverpassLoader implements IFilterType {
 	private File downloadData(boolean forceDownload) throws IOException {
 		File file = new File("data/download/"+this.type+"-"+this.value+".json");
 		if (forceDownload || !file.exists()) {
+			file.mkdirs();
 			String queryString = "[out:json][timeout:600];\n"
 					+"area("+countryId+")->.searchArea;\n"
 					+"(\n"
