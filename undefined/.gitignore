@@ -25,4 +25,4 @@ nbdist/
 
 # Others
 /mvnw*
-/data/download*
+/data/*
