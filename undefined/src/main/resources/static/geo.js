@@ -1,7 +1,13 @@
 var $map;
+var markers = [];
 
 var onchangeEvent = function() {
 	var requestParams = "";
+
+	jQuery.each(markers, function (key, marker) {
+		marker.setMap(null);
+	});
+	markers = [];
 
 	jQuery('.checkbox').each(function () {
 		var checkbox = (this.checked ? jQuery(this) : null);
@@ -16,16 +22,6 @@ var onchangeEvent = function() {
 		}
 	})
 
-	/*
-	 id:"200403022"
-	 location:
-	 	lat:6.115973
-	 	lon:49.613246
-	 name:"Luxembourg, Square New York"
-	 type:"stop"
-	 */
-
-
 	if (requestParams) {
 
 			jQuery.getJSON("/search/pois?" + requestParams, function (data) {
@@ -34,7 +30,6 @@ var onchangeEvent = function() {
 
 				var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 				var latLong = {lat: $poi.location.lat, lng: $poi.location.lon};
-				console.log(latLong);
 
 				var marker = new google.maps.Marker({
 					position: latLong,
@@ -42,9 +37,10 @@ var onchangeEvent = function() {
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					icon: image
 				});
-				/* */
 
 				marker.setMap($map);
+
+				markers.push(marker);
 			});
 		});
 	}

@@ -3,6 +3,7 @@ package com.doclerholding.hackaton.service;
 import com.doclerholding.hackaton.data.loaders.IDataType;
 import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.service.model.FilterCriteria;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,17 +41,10 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public List<Poi> getPois(List<String> filters) {
-		Criteria criteria = null;
+		Criteria criteria = new Criteria("type").in(filters);
 
-		for(String filterName: filters){
-			if(criteria == null){
-				criteria = new Criteria("type").is(filterName);
-			}else{
-				criteria.and("type").is(filterName);
-			}
-		}
 		CriteriaQuery query = new CriteriaQuery(criteria);
-		query.setPageable(new PageRequest(0, 50));
+		query.setPageable(new PageRequest(0, 500));
 		return template.queryForList(query, Poi.class);
 
 	}
