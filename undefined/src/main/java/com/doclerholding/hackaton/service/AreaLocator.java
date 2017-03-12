@@ -45,13 +45,13 @@ public class AreaLocator implements IAreaLocator {
 		double midLat = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By));
 		double midLon = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
 
-		return new PointImpl(midLon, midLat, SpatialContext.GEO);
+		return new PointImpl(Math.toDegrees(midLon), Math.toDegrees(midLat), SpatialContext.GEO);
 	}
 	
 	private List<LocatedArea> getAreas(List<GeoPoint> startPoints, double radiusDeg, SortedSet<AreaFilterCriteria> filters) {
 		List<LocatedArea> retval = new ArrayList<>(startPoints.size());
 		double lfr = 0;
-		Criteria preFilterCriteria = new Criteria("type");
+		Criteria typeFilterCriteria = new Criteria("type");
 		Map<String,Double> typeRadiusMap = new HashMap<>(filters.size());
 		for (AreaFilterCriteria filter: filters) {
 			double r = filter.getRadiusKm() * DistanceUtils.KM_TO_DEG;
@@ -60,11 +60,14 @@ public class AreaLocator implements IAreaLocator {
 			}
 			typeRadiusMap.put(filter.getType(), Double.valueOf(filter.getRadiusKm() * DistanceUtils.KM_TO_DEG));
 		}
-		preFilterCriteria.in(typeRadiusMap.keySet());
-		for (GeoPoint startPoint: startPoints) {			
+		typeFilterCriteria.in(typeRadiusMap.keySet());
+		for (GeoPoint startPoint: startPoints) {
 			double distance = radiusDeg + lfr;
 			Criteria criteria = new Criteria("location").within(startPoint, String.valueOf(distance * DistanceUtils.DEG_TO_KM)+"km");
-			List<Poi> result = this.esTemplate.queryForList(new CriteriaQuery(criteria), Poi.class);
+			List<Poi> result = this.esTemplate.queryForList(new CriteriaQuery(criteria.and(typeFilterCriteria)), Poi.class);
+			if (result.isEmpty()) {
+				continue;
+			}
 			Set<String> requireTypes = new HashSet<>(typeRadiusMap.keySet());
 
 			// magic on
@@ -98,7 +101,7 @@ public class AreaLocator implements IAreaLocator {
 								case INTERSECTS:
 									// intersect we calculate a approximately base circle between the two circle
 									basePoint = midPoint(basePoint, filterPoint);
-									baseCircle = new GeoCircle(basePoint, Math.abs(filterRadius-baseRadius), SpatialContext.GEO);
+									baseCircle = new GeoCircle(basePoint, (filterRadius+baseRadius)/2, SpatialContext.GEO);
 									break;
 							}
 					}

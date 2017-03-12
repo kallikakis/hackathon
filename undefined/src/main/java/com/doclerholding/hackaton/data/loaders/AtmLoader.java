@@ -13,7 +13,7 @@ public class AtmLoader extends AbstractOverpassLoader {
 
 	@Override
 	public String dataType() {
-		return "ATM";
+		return "atm";
 	}
 
 	public static void main(String[] args) {
