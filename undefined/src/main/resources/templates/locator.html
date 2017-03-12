@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Boot and Thymeleaf example</title>
+    <title>Lux Locator</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style>
         html, body {
@@ -20,50 +20,43 @@
 		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/jquery.sidr/2.2.1/stylesheets/jquery.sidr.dark.min.css}"/>
 </head>
 <body>
+
 <div id="cssmenu">
 	<ul>
 		<li class="active"><a href="/"><i class="fa fa-fw fa-map-marker"></i> Lux Locator</a></li>
 		<li><a href="/airQuality"><i class="fa fa-fw fa-map-marker"></i> Air Quality</a></li>
 		<li><a href="/poi"><i class="fa fa-fw fa-map-marker"></i> POI</a></li>
-		<li><a href="/live"><i class="fa fa-fw fa-refresh"></i> Live</a></li>
+		<!-- li><a href="/live"><i class="fa fa-fw fa-refresh"></i> Live</a></li -->
 	</ul>
-</div>
-
-<div id="sidr">
-	<ul>
-		<li th:each="filter: ${filteringCriteria}">
-			<a href="#"><input type="checkbox" name="vehicle" class="checkbox" onchange="intersectData()" th:id="${filter.filterType}" th:text="${filter.filterType}"/></a>
-		</li>
-	</ul>
-	<form>
-		<input type="text" placeholder="Search..." />
-	</form>
-	<h2>Sample heading</h2>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis sapien non nisi sodales pulvinar. Curabitur odio velit, porta sit amet lobortis sit amet, volutpat ut justo.</p>
 </div>
 
 <a id="simple-menu" class="menu-button" href="#sidr">Toggle menu</a>
+<div id="sidr">
+	<ul>
+		<li th:each="filter: ${filteringCriteria}">
+			<input type="checkbox" name="vehicle" class="checkbox" onchange="intersectData()" th:id="${filter.filterType}" th:text="${filter.filterType}"/>
+			<span th:id="'ext_' + ${filter.filterType}" style="display: none"><input type="text" value="5" onKeyUp="isNaN(this.value) ? alert('Invalid distance value') : intersectData()" th:id="'distance_' + ${filter.filterType}" size="2" maxlength="2" style="width: 30px; display: inline;" />km</span>
+		</li>
+	</ul>
+</div>
+
 <div id="map"></div>
-<!--
-<script src="sockjs-0.3.4.js"></script>
-<script src="stomp.js"></script>
--->
 
 <script th:src="@{https://code.jquery.com/jquery-1.12.4.js}"></script>
+<script th:src="@{https://code.jquery.com/ui/1.12.1/jquery-ui.js}"></script>
 
-<script src="jquery.sidr.js"/>
+<script src="jquery.sidr.js"></script>
 <script src="geo.js"></script>
-<script th:async="async" th:defer="defer"
-        th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=initMap)}">
-</script>
+<script th:async="async" th:defer="defer" th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=initMap)}"></script>
 
 <script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
 	;(function($){
 		$('#simple-menu').sidr({
 			timing: 'ease-in-out',
-			speed: 500
+			speed: 500,
 		});
+		$("#simple-menu").click();
 	})(jQuery);
 	/*]]>*/
 </script>

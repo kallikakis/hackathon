@@ -1,4 +1,5 @@
 var arrows = {};
+var requestParams = "";
 function drawAirQualityZones() {
 
     jQuery.getJSON("/airquality/zones", function (data) {
@@ -319,25 +320,25 @@ var $map;
 var markers = [];
 
 var intersectData = function () {
-    var requestParams = "";
 
     jQuery.each(markers, function (key, marker) {
         marker.setMap(null);
     });
     markers = [];
 
-    jQuery('.checkbox').each(function () {
-        var checkbox = (this.checked ? jQuery(this) : null);
+	jQuery('.checkbox').each(function () {
+		document.getElementById("ext_"+this.id).style.display = this.checked ? 'block' : 'none';
+		var checkbox = (this.checked ? jQuery(this) : null);
 
-        if (checkbox != null) {
+		if (checkbox != null) {
 
-            if (!requestParams) {
-                requestParams = "types=" + checkbox.attr("id") + ":5";
-            } else {
-                requestParams = requestParams + "&types=" + checkbox.attr("id") + ":5";
-            }
-        }
-    })
+			if (!requestParams) {
+				requestParams = "types=" + checkbox.attr("id") + ":"+document.getElementById("distance_"+checkbox.attr("id")).value;
+			} else {
+				requestParams = requestParams + "&types=" + checkbox.attr("id")  + ":"+document.getElementById("distance_"+checkbox.attr("id")).value;
+			}
+		}
+	})
 
     jQuery.each(markers, function (key, circle) {
         circle.setMap(null);
@@ -370,7 +371,7 @@ var intersectData = function () {
 };
 
 var aggregateData = function () {
-    var requestParams = "";
+
 
     jQuery.each(markers, function (key, marker) {
         marker.setMap(null);
@@ -459,10 +460,37 @@ var aggregateData = function () {
 
 function initMap() {
 
+    var  addressMarkers = [];
     $map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: {lat: 49.749601, lng: 6.157497},
         mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    $("#search").keypress(function(e) {
+        if (e.which == 13) {
+
+            jQuery.each(addressMarkers, function (key, marker) {
+                marker.setMap(null);
+            });
+            //$('#pTest').text('test')
+            var address = $("#search").val();
+
+            $.getJSON("/search/description/address?address="+address, function(data, status){
+                if(data){
+                    $('#description').html(data.description);
+                    var marker = new google.maps.Marker({
+                        map: $map,
+                        position: new google.maps.LatLng(data.coords.lat, data.coords.lon),
+                        title: 'Some location'
+                    });
+                    marker.setMap($map);
+                    addressMarkers.push(marker);
+                }else{
+                    $('#description').text("address not found!");
+                }
+            });
+        }
     });
 
     // FIXME: Not the best pattern - just too tired to externalize :)

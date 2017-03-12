@@ -15,9 +15,4 @@ public class ParkLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "park";
 	}
-
-	public static void main(String[] args) {
-		ParkLoader loader = new ParkLoader();
-		loader.load(true);
-	}
 }

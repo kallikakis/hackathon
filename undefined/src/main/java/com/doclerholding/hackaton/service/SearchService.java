@@ -13,6 +13,8 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 public interface SearchService {
 
 	List<FilterCriteria> getFilterCriteria();
+	String getPoiDescription(GeoPoint point);
+	List<Poi> getPoisWithin(double latitude, double longitude, String distance);
 	List<Poi> getPois(GeoBox box, List<String> filters);
 	List<Poi> getPois(GeoPoint origo, double radiusKm, List<String> filters);
 }

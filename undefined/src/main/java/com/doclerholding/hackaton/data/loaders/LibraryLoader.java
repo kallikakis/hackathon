@@ -15,9 +15,4 @@ public class LibraryLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "library";
 	}
-
-	public static void main(String[] args) {
-		LibraryLoader loader = new LibraryLoader();
-		loader.load(true);
-	}
 }

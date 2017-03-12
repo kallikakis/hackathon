@@ -15,9 +15,4 @@ public class SwimmingPoolLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "swimming";
 	}
-
-	public static void main(String[] args) {
-		SwimmingPoolLoader loader = new SwimmingPoolLoader();
-		loader.load(true);
-	}
 }
