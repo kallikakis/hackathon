@@ -3,17 +3,17 @@ package com.doclerholding.hackaton.service.model;
 public class LocatedArea {
 	private double lat;
 	private double lon;
-	private double radiusDeg;
+	private double radiusMeter;
 	
 	public LocatedArea() {
 		super();
 	}
 	
-	public LocatedArea(double lat, double lon, double radiusDeg) {
+	public LocatedArea(double lat, double lon, double radiusMeter) {
 		super();
 		this.lat = lat;
 		this.lon = lon;
-		this.radiusDeg = radiusDeg;
+		this.radiusMeter = radiusMeter;
 	}
 
 	public double getLat() {
@@ -32,11 +32,11 @@ public class LocatedArea {
 		this.lon = lon;
 	}
 	
-	public double getRadiusDeg() {
-		return radiusDeg;
+	public double getRadiusMeter() {
+		return radiusMeter;
 	}
 	
-	public void setRadiusDeg(double radiusDeg) {
-		this.radiusDeg = radiusDeg;
+	public void setRadiusMeter(double radiusMeter) {
+		this.radiusMeter = radiusMeter;
 	}
 }
