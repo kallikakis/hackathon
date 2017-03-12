@@ -103,7 +103,7 @@ public class SearchServiceImpl implements SearchService {
 
 	public List<Poi> getPoisWithin(double latitude, double longitude, String distance) {
 		CriteriaQuery searchQuery = new CriteriaQuery(new Criteria("location").within(new GeoPoint(latitude, longitude), distance));
-		searchQuery.setPageable(new PageRequest(0,MAX_RESULT));
+		searchQuery.setPageable(new PageRequest(0,5000));
 		return template.queryForList(searchQuery, Poi.class);
 	}
 
