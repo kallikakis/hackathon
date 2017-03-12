@@ -39,6 +39,7 @@ public class DetailsService {
 		AirQualityDetails result = null;
 		try {
 			result = mapper.treeToValue(props, AirQualityDetails.class);
+			result.generateIndex();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
