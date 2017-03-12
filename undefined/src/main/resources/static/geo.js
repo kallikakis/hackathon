@@ -1,17 +1,58 @@
-var map;
+var $map;
 
-var onchangeEvent = function(){
+var onchangeEvent = function() {
+	var requestParams = "";
+
 	jQuery('.checkbox').each(function () {
 		var checkbox = (this.checked ? jQuery(this) : null);
+
 		if (checkbox != null) {
-			console.log(checkbox.attr("id"));
+
+			if (!requestParams) {
+				requestParams = "filters=" + checkbox.attr("id");
+			} else {
+				requestParams = requestParams + "&filters=" + checkbox.attr("id");
+			}
 		}
-	});
+	})
+
+	/*
+	 id:"200403022"
+	 location:
+	 	lat:6.115973
+	 	lon:49.613246
+	 name:"Luxembourg, Square New York"
+	 type:"stop"
+	 */
+
+
+	if (requestParams) {
+
+			jQuery.getJSON("/search/pois?" + requestParams, function (data) {
+
+			jQuery.each(data, function (key, $poi) {
+
+				var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+				var latLong = {lat: $poi.location.lat, lng: $poi.location.lon};
+				console.log(latLong);
+
+				var marker = new google.maps.Marker({
+					position: latLong,
+					visible: true,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					icon: image
+				});
+				/* */
+
+				marker.setMap($map);
+			});
+		});
+	}
 };
 
 function initMap() {
 
-  map = new google.maps.Map(document.getElementById('map'), {
+  $map = new google.maps.Map(document.getElementById('map'), {
     zoom: 10,
     center: {lat: 49.749601, lng: 6.157497},
     mapTypeId: google.maps.MapTypeId.ROADMAP
