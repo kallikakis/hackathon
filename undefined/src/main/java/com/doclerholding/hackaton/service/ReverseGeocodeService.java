@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class ReverseGeocodeService {
 
 	@Autowired
-	RestTemplate restTemplate;
+	private RestTemplate restTemplate;
 	
 	public GeoPoint pointFromAddress(String address){
 		JsonNode node = restTemplate.getForObject("http://nominatim.openstreetmap.org/search?format=json&q={query}", JsonNode.class, address);
@@ -31,9 +31,12 @@ public class ReverseGeocodeService {
 		}
 		JsonNode addr = node.path(pos);
 
-		double lon = addr.path("lon").asDouble();
-		double lat = addr.path("lat").asDouble();
-
-		return new GeoPoint(lat, lon);
+		if (addr != null) {
+			double lon = addr.path("lon").asDouble();
+			double lat = addr.path("lat").asDouble();
+	
+			return new GeoPoint(lat, lon);
+		}
+		return null;
 	}
 }
