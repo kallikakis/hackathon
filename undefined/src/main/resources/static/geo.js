@@ -474,7 +474,7 @@ function initMap() {
             jQuery.each(addressMarkers, function (key, marker) {
                 marker.setMap(null);
             });
-            //$('#pTest').text('test')
+         
             var address = $("#search").val();
 
             $.getJSON("/search/description/address?address="+address, function(data, status){
@@ -485,12 +485,17 @@ function initMap() {
                         position: new google.maps.LatLng(data.coords.lat, data.coords.lon),
                         title: 'Some location'
                     });
+                    $map.setZoom(14);
+                    $map.panTo(marker.position);
                     marker.setMap($map);
                     addressMarkers.push(marker);
                 }else{
-                    $('#description').text("address not found!");
+                    $('#description').text("Address not found!");
                 }
-            });
+            })
+                .error(function(event, jqxhr, exception) {
+                    $('#description').text("Address not found!");
+                });
         }
     });
 
