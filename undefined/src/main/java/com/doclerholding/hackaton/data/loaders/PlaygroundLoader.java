@@ -15,9 +15,4 @@ public class PlaygroundLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "playgound";
 	}
-
-	public static void main(String[] args) {
-		PlaygroundLoader loader = new PlaygroundLoader();
-		loader.load(true);
-	}
 }
