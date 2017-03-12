@@ -17,9 +17,13 @@ public class AirQualityDetails {
 	private Double so2;
 	private Double co;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private AirQualityIndexEnum index = AirQualityIndexEnum.valueOf(this.pm10, this.no2, this.o3, this.so2, this.co);
+	private AirQualityIndexEnum index;
 
 	public AirQualityDetails() {
+	}
+
+	public void generateIndex(){
+		index = AirQualityIndexEnum.valueOf(this.pm10, this.no2, this.o3, this.so2, this.co);
 	}
 
 	public String getId() {
