@@ -4,7 +4,7 @@ import com.doclerholding.hackaton.data.loaders.IDataType;
 import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.service.model.FilterCriteria;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,20 +88,11 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public List<Poi> getPois(List<String> filters) {
-		Criteria criteria = null;
-
-		for(String filterName: filters){
-			if(criteria == null){
-				criteria = new Criteria("type").is(filterName);
-			}else{
-				criteria.and("type").is(filterName);
-			}
-		}
+		Criteria criteria = new Criteria("type").in(filters);
 
 		CriteriaQuery query = new CriteriaQuery(criteria);
-		query.setPageable(new PageRequest(0, 50));
+		query.setPageable(new PageRequest(0, 500));
 		return template.queryForList(query, Poi.class);
-
 	}
 
 	public List<Poi> getPoisWithin(double latitude, double longitude, String distance){
