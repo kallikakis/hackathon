@@ -419,10 +419,10 @@ var aggregateData = function () {
                 });
 
                 if ($poi.type == "parking") {
-                    console.log($poi.id);
+
                     marker.addListener('click', function () {
                         jQuery.getJSON("/parking/detail/" + $poi.id, function (data) {
-                            console.log(data);
+
                             var contentString = '<div id="content">' +
                                 'Total Spaces: ' + data.total + '</br>' +
                                 'Free Spaces: ' + data.free + '</br>' +
