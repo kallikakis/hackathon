@@ -38,11 +38,14 @@ public class DetailsService {
 	public AirQualityDetails getAirQualityDetail(String id) {
 		JsonNode node = restTemplate.getForObject(PUBLIC_DATA_BASE_URL + "Weather/Airquality/{id}", JsonNode.class, id);
 		JsonNode props = node.path("properties");
+		JsonNode geometry = node.path("geometry");
 		ObjectMapper mapper = new ObjectMapper();
 		AirQualityDetails result = null;
 		try {
 			result = mapper.treeToValue(props, AirQualityDetails.class);
 			result.generateIndex();
+			result.setLat(geometry.path("coordinates").get(1).asDouble());
+			result.setLng(geometry.path("coordinates").get(0).asDouble());
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

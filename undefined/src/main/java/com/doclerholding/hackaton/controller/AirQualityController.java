@@ -23,7 +23,7 @@ public class AirQualityController {
 	private DetailsService detailsService;
 
 	@RequestMapping("/details/{id}")
-	public AirQualityDetails getDetailsById(@PathVariable String id) throws JsonProcessingException {
+	public @ResponseBody AirQualityDetails getDetailsById(@PathVariable String id) throws JsonProcessingException {
 		return this.detailsService.getAirQualityDetail(id);
 	}
 

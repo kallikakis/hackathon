@@ -8,14 +8,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AirQualityDetails {
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private double lat;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private double lng;
 	private String id;
 	private String name;
-	private Double temp;
-	private Double pm10;
-	private Double no2;
-	private Double o3;
-	private Double so2;
-	private Double co;
+	private double temp;
+	private double pm10;
+	private double no2;
+	private double o3;
+	private double so2;
+	private double co;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private AirQualityIndexEnum index;
 
@@ -42,52 +46,68 @@ public class AirQualityDetails {
 		this.name = name;
 	}
 
-	public Double getTemp() {
+	public double getTemp() {
 		return temp;
 	}
 
-	public void setTemp(Double temp) {
+	public void setTemp(double temp) {
 		this.temp = temp;
 	}
 
-	public Double getPm10() {
+	public double getPm10() {
 		return pm10;
 	}
 
-	public void setPm10(Double pm10) {
+	public void setPm10(double pm10) {
 		this.pm10 = pm10;
 	}
 
-	public Double getNo2() {
+	public double getNo2() {
 		return no2;
 	}
 
-	public void setNo2(Double no2) {
+	public void setNo2(double no2) {
 		this.no2 = no2;
 	}
 
-	public Double getO3() {
+	public double getO3() {
 		return o3;
 	}
 
-	public void setO3(Double o3) {
+	public void setO3(double o3) {
 		this.o3 = o3;
 	}
 
-	public Double getSo2() {
+	public double getSo2() {
 		return so2;
 	}
 
-	public void setSo2(Double so2) {
+	public void setSo2(double so2) {
 		this.so2 = so2;
 	}
 
-	public Double getCo() {
+	public double getCo() {
 		return co;
 	}
 
-	public void setCo(Double co) {
+	public void setCo(double co) {
 		this.co = co;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLng() {
+		return lng;
+	}
+
+	public void setLng(double lng) {
+		this.lng = lng;
 	}
 
 	public AirQualityIndexEnum getIndex() {
