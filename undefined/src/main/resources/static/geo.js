@@ -473,16 +473,18 @@ function initMap() {
             var address = $("#search").val();
 
             $.getJSON("/search/description/address?address="+address, function(data, status){
-
-                $('#description').html(data.description);
-                var marker = new google.maps.Marker({
-                    map: $map,
-                    position: new google.maps.LatLng(data.coords.lat, data.coords.lon),
-                    title: 'Some location'
-                });
-                marker.setMap($map);
-                addressMarkers.push(marker);
-
+                if(data){
+                    $('#description').html(data.description);
+                    var marker = new google.maps.Marker({
+                        map: $map,
+                        position: new google.maps.LatLng(data.coords.lat, data.coords.lon),
+                        title: 'Some location'
+                    });
+                    marker.setMap($map);
+                    addressMarkers.push(marker);
+                }else{
+                    $('#description').text("address not found!");
+                }
             });
         }
     });
