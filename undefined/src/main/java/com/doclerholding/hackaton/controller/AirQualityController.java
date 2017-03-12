@@ -7,19 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by claudiu.arba on 11/03/17.
  */
 @Controller
-@RequestMapping("/airquality/details")
+@RequestMapping("/airquality")
 public class AirQualityController {
 
 	@Autowired
-	DetailsService detailsService;
+	private DetailsService detailsService;
 
-	@RequestMapping("/{id}")
+	@RequestMapping("/details/{id}")
 	public AirQualityDetails getDetailsById(@PathVariable String id) throws JsonProcessingException {
-		return detailsService.getAirQualityDetail(id);
+		return this.detailsService.getAirQualityDetail(id);
+	}
+
+	@RequestMapping(value = "/zones", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<String> getZones() throws JsonProcessingException {
+		return this.detailsService.getAirQualityZones();
 	}
 }

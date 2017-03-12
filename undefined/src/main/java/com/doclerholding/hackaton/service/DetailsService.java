@@ -5,9 +5,12 @@ import com.doclerholding.hackaton.data.model.parking.ParkSpotDetail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * Created by claudiu.arba on 11/03/17.
@@ -44,5 +47,16 @@ public class DetailsService {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public List<String> getAirQualityZones() {
+		ImmutableList.Builder<String> builder = ImmutableList.builder();
+		JsonNode node = restTemplate.getForObject(PUBLIC_DATA_BASE_URL + "Weather/Airquality", JsonNode.class);
+		JsonNode features = node.path("features");
+		for (JsonNode feature : features) {
+			JsonNode properties = feature.path("properties");
+			builder.add(properties.path("id").asText());
+		}
+		return builder.build();
 	}
 }

@@ -2,6 +2,10 @@ var arrows = {};
 var requestParams = "";
 function drawAirQualityZones() {
 
+    jQuery.getJSON("/airquality/zones", function (data) {
+
+    });
+
     var AirQuality = {
         GOOD: {
             index: 6,
