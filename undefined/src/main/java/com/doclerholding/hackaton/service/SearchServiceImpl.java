@@ -7,8 +7,10 @@ import com.doclerholding.hackaton.service.model.FilterCriteria;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.doclerholding.hackaton.util.CoordsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -37,6 +39,85 @@ public class SearchServiceImpl implements SearchService {
 	
 	@Autowired
 	private List<IDataType> dataTypes;
+
+	public String getPoiDescription(String address){
+		GeoPoint point = reverseGeocodeService.pointFromAddress(address);
+		List<Poi> list= getPoisWithin(point.getLat(), point.getLon(), "5km");
+
+		Map<String, Double> distanceMap = new HashMap<>();
+		Map<String, String> nameMap = new HashMap<>();
+		int parkingCount = 0;
+		for(Poi p:list){
+			if(p.getType().equals("school")){
+				if(p.getLocation() != null){
+					double dist = CoordsUtil.distFrom(point.getLat(), point.getLon(), p.getLocation().getLat(), p.getLocation().getLon());
+					dist(dist, "school",p.getName() , distanceMap, nameMap);
+				}
+			}
+			if(p.getType().equals("hospital")){
+				if(p.getLocation() != null){
+					double dist = CoordsUtil.distFrom(point.getLat(), point.getLon(), p.getLocation().getLat(), p.getLocation().getLon());
+					dist(dist, "hospital",p.getName(), distanceMap, nameMap);
+				}
+			}
+			if(p.getType().equals("parking")){
+				parkingCount++;
+				if(p.getLocation() != null){
+					double dist = CoordsUtil.distFrom(point.getLat(), point.getLon(), p.getLocation().getLat(), p.getLocation().getLon());
+					dist(dist, "parking",p.getName(), distanceMap, nameMap);
+				}
+			}
+			if(p.getType().equals("playgound")){
+				if(p.getLocation() != null){
+					double dist = CoordsUtil.distFrom(point.getLat(), point.getLon(), p.getLocation().getLat(), p.getLocation().getLon());
+					dist(dist, "playgound",p.getName(), distanceMap, nameMap);
+				}
+			}
+			if(p.getType().equals("park")){
+				if(p.getLocation() != null){
+					double dist = CoordsUtil.distFrom(point.getLat(), point.getLon(), p.getLocation().getLat(), p.getLocation().getLon());
+					dist(dist, "park",p.getName(), distanceMap, nameMap);
+				}
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		if(nameMap.containsKey("park")){
+			sb.append("The closest public park is \""+nameMap.get("park")+"\" at a distance of "+distanceMap.get("park")+"m<br>");
+		}
+		if(nameMap.containsKey("school")){
+			sb.append("The closest school is \""+nameMap.get("school")+"\" at a distance of "+distanceMap.get("school")+"m<br>");
+		}
+		if(nameMap.containsKey("playgound")){
+			sb.append("The closest playgound is \""+nameMap.get("playgound")+"\" at a distance of "+distanceMap.get("playgound")+"m<br>");
+		}
+		if(nameMap.containsKey("hospital")){
+			sb.append("The closest hospital is \""+nameMap.get("hospital")+"\" at a distance of "+distanceMap.get("hospital")+"m<br>");
+		}
+		if(nameMap.containsKey("parking")){
+			sb.append("The closest parking spot is \""+nameMap.get("parking")+"\" at a distance of "+distanceMap.get("parking")+"m<br>");
+		}
+		sb.append("There are "+parkingCount+" parking spots in 5km.<br>");
+
+		return sb.toString();
+	}
+
+	public List<Poi> getPoisWithin(double latitude, double longitude, String distance) {
+		CriteriaQuery searchQuery = new CriteriaQuery(new Criteria("location").within(new GeoPoint(latitude, longitude), distance));
+		searchQuery.setPageable(new PageRequest(0,5000));
+		return template.queryForList(searchQuery, Poi.class);
+	}
+
+	public void dist(double dist, String type, String name, Map<String, Double> distanceMap, Map<String, String> nameMap){
+		if(distanceMap.containsKey(type)){
+			if(distanceMap.get(type) > dist){
+				distanceMap.put(type, dist);
+				nameMap.put(type, name);
+			}
+		}else{
+			distanceMap.put(type, dist);
+			nameMap.put(type, name);
+		}
+	}
 
 	@Override
 	public List<FilterCriteria> getFilterCriteria() {
