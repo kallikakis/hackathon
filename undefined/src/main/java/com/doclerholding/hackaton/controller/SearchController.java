@@ -3,6 +3,10 @@ package com.doclerholding.hackaton.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.geo.GeoBox;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
@@ -39,8 +43,24 @@ public class SearchController {
 
 	@RequestMapping(path="/search/description/address", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	public @ResponseBody
-	String getAddressShortDescription(@RequestParam String address) {
-		return this.searchService.getPoiDescription(address);
+	String getAddressShortDescription(@RequestParam String address) throws RestNotFoundException{
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode node = mapper.createObjectNode();
+
+		GeoPoint point = reverseGeocodeService.pointFromAddress(address);
+		if (point == null) {
+			throw new RestNotFoundException("Address not found");
+		}
+		String description = this.searchService.getPoiDescription(point);
+		node.put("description", description);
+		JsonNode coords = mapper.valueToTree(point);
+		node.put("coords" ,coords);
+		try {
+			return mapper.writeValueAsString(node);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	@RequestMapping(path="/search/pois/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

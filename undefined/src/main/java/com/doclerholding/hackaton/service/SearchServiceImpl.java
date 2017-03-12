@@ -4,6 +4,7 @@ import com.doclerholding.hackaton.data.loaders.IDataType;
 import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.service.model.FilterCriteria;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,12 +37,14 @@ public class SearchServiceImpl implements SearchService {
 
 	@Autowired
 	ReverseGeocodeService reverseGeocodeService;
-	
+
+	private static final DecimalFormat df = new DecimalFormat("#.##");
+
 	@Autowired
 	private List<IDataType> dataTypes;
 
-	public String getPoiDescription(String address){
-		GeoPoint point = reverseGeocodeService.pointFromAddress(address);
+	public String getPoiDescription(GeoPoint point ){
+
 		List<Poi> list= getPoisWithin(point.getLat(), point.getLon(), "5km");
 
 		Map<String, Double> distanceMap = new HashMap<>();
@@ -82,19 +85,19 @@ public class SearchServiceImpl implements SearchService {
 		}
 		StringBuilder sb = new StringBuilder();
 		if(nameMap.containsKey("park")){
-			sb.append("The closest public park is \""+nameMap.get("park")+"\" at a distance of "+distanceMap.get("park")+"m<br>");
+			sb.append("The closest public park is \""+nameMap.get("park")+"\" at a distance of "+df.format(distanceMap.get("park"))+"m<br>");
 		}
 		if(nameMap.containsKey("school")){
-			sb.append("The closest school is \""+nameMap.get("school")+"\" at a distance of "+distanceMap.get("school")+"m<br>");
+			sb.append("The closest school is \""+nameMap.get("school")+"\" at a distance of "+df.format(distanceMap.get("school"))+"m<br>");
 		}
 		if(nameMap.containsKey("playgound")){
-			sb.append("The closest playgound is \""+nameMap.get("playgound")+"\" at a distance of "+distanceMap.get("playgound")+"m<br>");
+			sb.append("The closest playgound is \""+nameMap.get("playgound")+"\" at a distance of "+df.format(distanceMap.get("playgound"))+"m<br>");
 		}
 		if(nameMap.containsKey("hospital")){
-			sb.append("The closest hospital is \""+nameMap.get("hospital")+"\" at a distance of "+distanceMap.get("hospital")+"m<br>");
+			sb.append("The closest hospital is \""+nameMap.get("hospital")+"\" at a distance of "+df.format(distanceMap.get("hospital"))+"m<br>");
 		}
 		if(nameMap.containsKey("parking")){
-			sb.append("The closest parking spot is \""+nameMap.get("parking")+"\" at a distance of "+distanceMap.get("parking")+"m<br>");
+			sb.append("The closest parking spot is \""+nameMap.get("parking")+"\" at a distance of "+df.format(distanceMap.get("parking"))+"m<br>");
 		}
 		sb.append("There are "+parkingCount+" parking spots in 5km.<br>");
 

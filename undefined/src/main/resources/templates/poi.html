@@ -35,11 +35,11 @@
 			<a href="#"><input type="checkbox" name="vehicle" class="checkbox" onchange="aggregateData()" th:id="${filter.filterType}" th:text="${filter.filterType}"/></a>
 		</li>
 	</ul>
-	<form>
-		<input type="text" placeholder="Search..." />
+	<form id="searchForm">
+		<input id="search" type="text" placeholder="Search..." />
 	</form>
-	<h2>Sample heading</h2>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis sapien non nisi sodales pulvinar. Curabitur odio velit, porta sit amet lobortis sit amet, volutpat ut justo.</p>
+	<h2>Address information</h2>
+	<p id="description"></p>
 </div>
 
 <a id="simple-menu" class="menu-button" href="#sidr">Toggle menu</a>
@@ -65,6 +65,14 @@
 			speed: 500
 		});
 	})(jQuery);
+
+	$("#simple-menu").click();
+
+	$(document).ready(function () {
+		$('#searchForm').on('submit', function(e) {
+			e.preventDefault();
+		});
+	});
 	/*]]>*/
 </script>
 

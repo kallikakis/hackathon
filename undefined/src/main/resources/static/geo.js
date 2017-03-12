@@ -1,4 +1,5 @@
 var arrows = {};
+var requestParams = "";
 function drawAirQualityZones() {
 
     var AirQuality = {
@@ -315,7 +316,6 @@ var $map;
 var markers = [];
 
 var intersectData = function () {
-    var requestParams = "";
 
     jQuery.each(markers, function (key, marker) {
         marker.setMap(null);
@@ -366,7 +366,7 @@ var intersectData = function () {
 };
 
 var aggregateData = function () {
-    var requestParams = "";
+
 
     jQuery.each(markers, function (key, marker) {
         marker.setMap(null);
@@ -455,10 +455,35 @@ var aggregateData = function () {
 
 function initMap() {
 
+    var  addressMarkers = [];
     $map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: {lat: 49.749601, lng: 6.157497},
         mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    $("#search").keypress(function(e) {
+        if (e.which == 13) {
+
+            jQuery.each(addressMarkers, function (key, marker) {
+                marker.setMap(null);
+            });
+            //$('#pTest').text('test')
+            var address = $("#search").val();
+
+            $.getJSON("/search/description/address?address="+address, function(data, status){
+
+                $('#description').html(data.description);
+                var marker = new google.maps.Marker({
+                    map: $map,
+                    position: new google.maps.LatLng(data.coords.lat, data.coords.lon),
+                    title: 'Some location'
+                });
+                marker.setMap($map);
+                addressMarkers.push(marker);
+
+            });
+        }
     });
 
     // FIXME: Not the best pattern - just too tired to externalize :)
