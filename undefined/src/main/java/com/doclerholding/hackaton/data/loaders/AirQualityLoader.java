@@ -2,7 +2,6 @@ package com.doclerholding.hackaton.data.loaders;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -28,15 +27,27 @@ public class AirQualityLoader extends AbstractTflLoader {
 	public boolean distanceFilter() {
 		return false;
 	}
+	
+	@Override
+	protected String getApiURL() {
+		return "https://api.tfl.lu/v1/Weather/Airquality";
+	}
 
 	@Override
 	public long load(boolean forceDownload) {
+		File dataFile;
+		try {
+			dataFile = this.downloadData(forceDownload);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return -1;
+		}
 		final ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode;
 		try {
-			rootNode = mapper.readTree(new File(Thread.currentThread().getContextClassLoader().getResource("air_quality.json").toURI()));
+			rootNode = mapper.readTree(dataFile);
 			return addPoint(rootNode, "air_quality");
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

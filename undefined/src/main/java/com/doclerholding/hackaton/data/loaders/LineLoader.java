@@ -2,8 +2,6 @@ package com.doclerholding.hackaton.data.loaders;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -27,16 +25,27 @@ public class LineLoader extends AbstractTflLoader {
 	public boolean distanceFilter() {
 		return true;
 	}
+	
+	@Override
+	protected String getApiURL() {
+		return "https://api.tfl.lu/v1/StopPoint";
+	}
 
 	@Override
 	public long load(boolean forceDownload) {
-		URL dirURL = Thread.currentThread().getContextClassLoader().getResource("stops.json");
+		File dataFile;
+		try {
+			dataFile = this.downloadData(forceDownload);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return -1;
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode;
 		try {
-			rootNode = mapper.readTree(new File(dirURL.toURI()));
+			rootNode = mapper.readTree(dataFile);
 			return addPoint(rootNode, "stop");
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

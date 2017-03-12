@@ -1,5 +1,11 @@
 package com.doclerholding.hackaton.data.loaders;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +23,34 @@ public abstract class AbstractTflLoader implements IDataType {
 
 	@Autowired
 	private PoiRepository poiRepository;
+	
+	abstract protected String getApiURL();
+
+	protected File downloadData(boolean forceDownload) throws IOException {
+		File file = new File("data/download/"+this.getClass().getSimpleName()+".json");
+		if (forceDownload || !file.exists()) {
+			file.getParentFile().mkdirs();
+			URL apiURL = new URL(this.getApiURL());
+			
+			HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
+			connection.setDoInput(true);
+			connection.setDoOutput(false);
+			connection.setRequestMethod("GET");
+			
+			try (
+					FileOutputStream fos = new FileOutputStream(file);
+					BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+			) {
+				int read = 0;
+				byte[] bytes = new byte[1024];
+				
+				while((read = bis.read(bytes)) != -1) {
+					fos.write(bytes, 0, read);
+				}
+			}
+		}
+		return file;
+	}
 
 	protected long addPoint(JsonNode node, String pointType) {
 		long cnt = 0;

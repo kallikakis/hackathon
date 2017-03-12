@@ -15,9 +15,4 @@ public class BankLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "bank";
 	}
-
-	public static void main(String[] args) {
-		BankLoader loader = new BankLoader();
-		loader.load(true);
-	}
 }

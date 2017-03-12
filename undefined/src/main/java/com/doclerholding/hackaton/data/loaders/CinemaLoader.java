@@ -15,9 +15,4 @@ public class CinemaLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "cinema";
 	}
-
-	public static void main(String[] args) {
-		CinemaLoader loader = new CinemaLoader();
-		loader.load(true);
-	}
 }

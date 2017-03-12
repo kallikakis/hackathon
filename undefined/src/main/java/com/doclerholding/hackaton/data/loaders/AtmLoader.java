@@ -15,9 +15,4 @@ public class AtmLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "atm";
 	}
-
-	public static void main(String[] args) {
-		AtmLoader loader = new AtmLoader();
-		loader.load(true);
-	}
 }
