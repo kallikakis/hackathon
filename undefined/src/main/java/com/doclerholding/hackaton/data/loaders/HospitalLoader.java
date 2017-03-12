@@ -15,9 +15,4 @@ public class HospitalLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "hospital";
 	}
-
-	public static void main(String[] args) {
-		HospitalLoader loader = new HospitalLoader();
-		loader.load(true);
-	}
 }

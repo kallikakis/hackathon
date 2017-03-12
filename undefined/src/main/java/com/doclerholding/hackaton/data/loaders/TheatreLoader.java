@@ -15,9 +15,4 @@ public class TheatreLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "theatre";
 	}
-
-	public static void main(String[] args) {
-		TheatreLoader loader = new TheatreLoader();
-		loader.load(true);
-	}
 }

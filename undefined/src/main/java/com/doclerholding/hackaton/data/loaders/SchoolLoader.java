@@ -15,9 +15,4 @@ public class SchoolLoader extends AbstractOverpassLoader {
 	public String dataType() {
 		return "school";
 	}
-
-	public static void main(String[] args) {
-		SchoolLoader loader = new SchoolLoader();
-		loader.load(true);
-	}
 }
