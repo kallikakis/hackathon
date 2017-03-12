@@ -29,17 +29,18 @@ public class ParkingSpotsLoader extends AbstractTflLoader {
 	}
 
 	@Override
-	public void load(boolean forceDownload) {
+	public long load(boolean forceDownload) {
 		URL dirURL = Thread.currentThread().getContextClassLoader().getResource("park_spots.json");
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode;
 		try {
 			rootNode = mapper.readTree(new File(dirURL.toURI()));
-			addPoint(rootNode, "parking");
+			return addPoint(rootNode, "parking");
 		} catch (IOException | URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
 }

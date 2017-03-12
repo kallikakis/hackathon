@@ -11,7 +11,6 @@ import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.stereotype.Component;
 
 import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.data.repository.PoiRepository;
@@ -40,7 +39,7 @@ abstract public class AbstractOverpassLoader implements IDataType {
 	private File downloadData(boolean forceDownload) throws IOException {
 		File file = new File("data/download/"+this.type+"-"+this.value+".json");
 		if (forceDownload || !file.exists()) {
-			file.mkdirs();
+			file.getParentFile().mkdirs();
 			String queryString = "[out:json][timeout:600];\n"
 					+"area("+countryId+")->.searchArea;\n"
 					+"(\n"
@@ -78,14 +77,15 @@ abstract public class AbstractOverpassLoader implements IDataType {
 		return file;
 	}
 	
-	private void loadData(File sourceFile) throws JsonProcessingException, IOException {
+	private long loadData(File sourceFile) throws JsonProcessingException, IOException {
+		long cnt = 0;
 		JsonNode rootNode = this.objectMapper.readTree(sourceFile);
 		JsonNode elements = rootNode.path("elements");
 		for(JsonNode item: elements) {
 			String itemType = item.get("type").asText();
 			Poi model = new Poi();
 			model.setId(ID_PREFIX+item.get("id").asInt());
-			model.setType(this.type);
+			model.setType(this.dataType());
 			if ("node".equals(itemType)) {
 				model.setLocation(new GeoPoint(item.get("lat").asDouble(), item.get("lon").asDouble()));
 				JsonNode tags = item.get("tags");
@@ -109,16 +109,20 @@ abstract public class AbstractOverpassLoader implements IDataType {
 				continue;
 			}
 			this.poiRepository.index(model);
+			cnt++;
 		}
+		return cnt;
 	}
 	
-	public void load(boolean forceDownload) {
+	@Override
+	public long load(boolean forceDownload) {
 		try {
-			this.loadData(this.downloadData(forceDownload));
+			return this.loadData(this.downloadData(forceDownload));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
 	@Override
