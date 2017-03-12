@@ -469,7 +469,7 @@ function initMap() {
             jQuery.each(addressMarkers, function (key, marker) {
                 marker.setMap(null);
             });
-            //$('#pTest').text('test')
+         
             var address = $("#search").val();
 
             $.getJSON("/search/description/address?address="+address, function(data, status){
