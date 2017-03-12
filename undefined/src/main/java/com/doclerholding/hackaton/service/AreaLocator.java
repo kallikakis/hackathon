@@ -114,7 +114,7 @@ public class AreaLocator implements IAreaLocator {
 			// magic off
 			if (requireTypes.isEmpty()) {
 				// we found all types in intersection;
-				retval.add(new LocatedArea(baseCircle.getCenter().getY(), baseCircle.getCenter().getX(), baseCircle.getRadius()));
+				retval.add(new LocatedArea(baseCircle.getCenter().getY(), baseCircle.getCenter().getX(), baseCircle.getRadius() * DistanceUtils.DEG_TO_KM * 1000));
 			}
 		}
 		return retval;

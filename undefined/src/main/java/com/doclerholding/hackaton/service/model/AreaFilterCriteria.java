@@ -1,20 +1,19 @@
 package com.doclerholding.hackaton.service.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class AreaFilterCriteria implements Serializable, Comparable<AreaFilterCriteria> {
 	private static final long serialVersionUID = 1L;
 
 	private String type;
 	private double radiusKm;
-	private Integer priority;
+	private int priority;
 
 	public AreaFilterCriteria() {
 		super();
 	}
 
-	public AreaFilterCriteria(String type, double radiusKm, Integer priority) {
+	public AreaFilterCriteria(String type, double radiusKm, int priority) {
 		super();
 		this.type = type;
 		this.radiusKm = radiusKm;
@@ -64,15 +63,6 @@ public class AreaFilterCriteria implements Serializable, Comparable<AreaFilterCr
 	// Filters unique by type (no other fields required then type)
 	@Override
 	public int compareTo(AreaFilterCriteria o) {
-		if (Objects.equals(this.priority, o.priority)) {
-			return 0;
-		}
-		if (this.priority == null) {
-			return Integer.MAX_VALUE;
-		}
-		if (o.priority == null) {
-			return Integer.MIN_VALUE;
-		}
-		return this.priority.compareTo(o.priority);
+		return Integer.compare(this.priority, o.priority);
 	}
 }
