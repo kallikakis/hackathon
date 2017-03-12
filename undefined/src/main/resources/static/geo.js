@@ -480,6 +480,8 @@ function initMap() {
                         position: new google.maps.LatLng(data.coords.lat, data.coords.lon),
                         title: 'Some location'
                     });
+                    $map.setZoom(14);
+                    $map.panTo(marker.position);
                     marker.setMap($map);
                     addressMarkers.push(marker);
                 }else{
