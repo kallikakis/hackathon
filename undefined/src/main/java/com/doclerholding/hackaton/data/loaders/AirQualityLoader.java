@@ -1,16 +1,14 @@
 package com.doclerholding.hackaton.data.loaders;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Created by maxim on 3/11/2017.
@@ -19,7 +17,7 @@ import java.net.URISyntaxException;
 @Qualifier("dataTypes")
 public class AirQualityLoader extends AbstractTflLoader {
 
-	private static Logger logger = LoggerFactory.getLogger(AirQualityLoader.class);
+	//private static Logger logger = LoggerFactory.getLogger(AirQualityLoader.class);
 
 	@Override
 	public String dataType() {
@@ -32,16 +30,17 @@ public class AirQualityLoader extends AbstractTflLoader {
 	}
 
 	@Override
-	public void load(boolean forceDownload) {
+	public long load(boolean forceDownload) {
 		final ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode;
 		try {
 			rootNode = mapper.readTree(new File(Thread.currentThread().getContextClassLoader().getResource("air_quality.json").toURI()));
-			addPoint(rootNode, "air_quality");
+			return addPoint(rootNode, "air_quality");
 		} catch (IOException | URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
 }
