@@ -60,9 +60,7 @@
 <script src="jquery.sidr.js"/>
 <script src="geo.js"></script>
 <script th:async="async" th:defer="defer"
-        th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=initMap)}">
-</script>
-
+        th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=drawAirQualityZones)}"/>
 <script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
 	;(function($){
