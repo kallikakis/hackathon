@@ -19,7 +19,7 @@ public class IndexController {
 	public String index(ModelMap modelMap) {
 		modelMap.addAttribute("filteringCriteria", searchService.getFilterCriteria());
 
-		return "index";
+		return "locator";
 	}
 
 	@RequestMapping("/locator")
