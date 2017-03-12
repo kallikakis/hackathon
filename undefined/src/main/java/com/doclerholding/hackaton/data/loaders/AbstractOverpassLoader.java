@@ -38,40 +38,56 @@ abstract public class AbstractOverpassLoader implements IDataType {
 	
 	private File downloadData(boolean forceDownload) throws IOException {
 		File file = new File("data/download/"+this.type+"-"+this.value+".json");
-		if (forceDownload || !file.exists()) {
-			file.getParentFile().mkdirs();
-			String queryString = "[out:json][timeout:600];\n"
-					+"area("+countryId+")->.searchArea;\n"
-					+"(\n"
-					+"	node["+type+"="+value+"](area.searchArea);\n"
-					+"	way["+type+"="+value+"](area.searchArea);\n"
-					+"	relation["+type+"="+value+"](area.searchArea);\n"
-					+");\n"
-					+"out center meta;\n";
-			
-			URL apiURL = new URL(OVERPASS_API);
-			
-			HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
-			connection.setDoInput(true);
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			
-			try (DataOutputStream request = new DataOutputStream(connection.getOutputStream())) {
-				request.writeBytes("data=" + URLEncoder.encode(queryString, "utf-8"));
-				request.flush();
-			}
-			
-			try (
-					FileOutputStream fos = new FileOutputStream(file);
-					BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-			) {
-				int read = 0;
-				byte[] bytes = new byte[1024];
-				
-				while((read = bis.read(bytes)) != -1) {
-					fos.write(bytes, 0, read);
+		int retry = 3;
+		while(retry > 0) {
+			try {
+				if (forceDownload || !file.exists()) {
+					file.getParentFile().mkdirs();
+					String queryString = "[out:json][timeout:600];\n"
+							+"area("+countryId+")->.searchArea;\n"
+							+"(\n"
+							+"	node["+type+"="+value+"](area.searchArea);\n"
+							+"	way["+type+"="+value+"](area.searchArea);\n"
+							+"	relation["+type+"="+value+"](area.searchArea);\n"
+							+");\n"
+							+"out center meta;\n";
+					
+					URL apiURL = new URL(OVERPASS_API);
+					
+					HttpURLConnection connection = (HttpURLConnection) apiURL.openConnection();
+					connection.setDoInput(true);
+					connection.setDoOutput(true);
+					connection.setRequestMethod("POST");
+					connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+					
+					try (DataOutputStream request = new DataOutputStream(connection.getOutputStream())) {
+						request.writeBytes("data=" + URLEncoder.encode(queryString, "utf-8"));
+						request.flush();
+					}
+					
+					try (
+							FileOutputStream fos = new FileOutputStream(file);
+							BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+					) {
+						int read = 0;
+						byte[] bytes = new byte[1024];
+						
+						while((read = bis.read(bytes)) != -1) {
+							fos.write(bytes, 0, read);
+						}
+					}
 				}
+				retry = 0;
+			} catch (IOException e) {
+				if (retry == 0) {
+					throw e;
+				}
+				try {
+					Thread.sleep(retry*1000);
+				} catch (InterruptedException e1) {
+					// NOP
+				}
+				retry--;
 			}
 		}
 		return file;
