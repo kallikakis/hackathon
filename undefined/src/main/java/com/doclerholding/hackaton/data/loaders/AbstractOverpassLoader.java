@@ -85,7 +85,7 @@ abstract public class AbstractOverpassLoader implements IDataType {
 			String itemType = item.get("type").asText();
 			Poi model = new Poi();
 			model.setId(ID_PREFIX+item.get("id").asInt());
-			model.setType(this.type);
+			model.setType(this.dataType());
 			if ("node".equals(itemType)) {
 				model.setLocation(new GeoPoint(item.get("lat").asDouble(), item.get("lon").asDouble()));
 				JsonNode tags = item.get("tags");
