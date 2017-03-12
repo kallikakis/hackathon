@@ -483,9 +483,12 @@ function initMap() {
                     marker.setMap($map);
                     addressMarkers.push(marker);
                 }else{
-                    $('#description').text("address not found!");
+                    $('#description').text("Address not found!");
                 }
-            });
+            })
+                .error(function(event, jqxhr, exception) {
+                    $('#description').text("Address not found!");
+                });
         }
     });
 

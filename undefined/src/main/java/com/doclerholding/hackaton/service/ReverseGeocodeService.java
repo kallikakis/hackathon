@@ -21,6 +21,9 @@ public class ReverseGeocodeService {
 		int i=0;
 		double max = 0;
 		int pos = 0;
+		if(node.size() == 0){
+			return null;
+		}
 		for(JsonNode n: node){
 			double importance = n.path("importance").asDouble();
 			if(importance > max){
