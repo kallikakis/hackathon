@@ -27,16 +27,27 @@ public class ParkingSpotsLoader extends AbstractTflLoader {
 	public boolean distanceFilter() {
 		return true;
 	}
+	
+	@Override
+	protected String getApiURL() {
+		return "https://api.tfl.lu/v1/Occupancy/CarPark";
+	}
 
 	@Override
 	public long load(boolean forceDownload) {
-		URL dirURL = Thread.currentThread().getContextClassLoader().getResource("park_spots.json");
+		File dataFile;
+		try {
+			dataFile = this.downloadData(forceDownload);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return -1;
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode;
 		try {
-			rootNode = mapper.readTree(new File(dirURL.toURI()));
+			rootNode = mapper.readTree(dataFile);
 			return addPoint(rootNode, "parking");
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
