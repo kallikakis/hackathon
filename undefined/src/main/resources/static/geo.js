@@ -320,6 +320,7 @@ var $map;
 var markers = [];
 
 var intersectData = function () {
+	var requestParams = "";
 
     jQuery.each(markers, function (key, marker) {
         marker.setMap(null);
@@ -371,7 +372,7 @@ var intersectData = function () {
 };
 
 var aggregateData = function () {
-
+	var requestParams = "";
 
     jQuery.each(markers, function (key, marker) {
         marker.setMap(null);
