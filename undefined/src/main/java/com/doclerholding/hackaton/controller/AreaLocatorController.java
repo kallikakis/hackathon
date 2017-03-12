@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ public class AreaLocatorController {
 	private IAreaLocator areaLocator;
 	
 	@Autowired
+	@Qualifier("dataTypeMap")
 	private Map<String,IDataType> dataTypeMap;
 	
 	@RequestMapping(path="/areas", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,7 +34,7 @@ public class AreaLocatorController {
 		SortedSet<AreaFilterCriteria> filters = new TreeSet<>();
 		for(int i = 0; i < filterArray.length; i++) {
 			String[] f = filterArray[i].split(":");
-			if (f.length != 2 || !this.dataTypeMap.containsKey(f[0]) || !this.dataTypeMap.get(f[0]).distanceFilter() || !StringUtils.isNumeric(f[1])) {
+			if (f.length != 2 || !this.dataTypeMap.containsKey(f[0]) || !this.dataTypeMap.get(f[0]).distanceFilter() ) {
 				throw new RestBadRequestException("Wrong input data: "+String.join("; ", filterArray));
 			}
 			filters.add(new AreaFilterCriteria(f[0], Math.abs(Double.valueOf(f[1]).doubleValue()), i));

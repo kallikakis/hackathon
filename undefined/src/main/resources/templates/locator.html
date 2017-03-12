@@ -9,14 +9,10 @@
 					margin: -0.
 					padding: -0.
         }
+
         #map {
         	height: 100%;
         }
-
-				.menuItem {
-					padding-top: 5px;
-					padding-bottom: 5px;
-				}
     </style>
 		<link rel="stylesheet" type="text/css" href="/css/navigation.css"/>
 
@@ -28,6 +24,7 @@
 	<ul>
 		<li class="active"><a href="/"><i class="fa fa-fw fa-map-marker"></i> Lux Locator</a></li>
 		<li><a href="/airQuality"><i class="fa fa-fw fa-map-marker"></i> Air Quality</a></li>
+		<li><a href="/poi"><i class="fa fa-fw fa-map-marker"></i> POI</a></li>
 		<li><a href="/live"><i class="fa fa-fw fa-refresh"></i> Live</a></li>
 	</ul>
 </div>
@@ -35,7 +32,7 @@
 <div id="sidr">
 	<ul>
 		<li th:each="filter: ${filteringCriteria}">
-			<a href="#"><input type="checkbox" name="vehicle" class="checkbox" onchange="onchangeEvent()" th:id="${filter.filterType}" th:text="${filter.filterType}"/></a>
+			<a href="#"><input type="checkbox" name="vehicle" class="checkbox" onchange="intersectData()" th:id="${filter.filterType}" th:text="${filter.filterType}"/></a>
 		</li>
 	</ul>
 	<form>

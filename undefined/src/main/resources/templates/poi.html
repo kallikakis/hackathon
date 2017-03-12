@@ -22,32 +22,48 @@
 <body>
 <div id="cssmenu">
 	<ul>
-		<li><a href="/locator"><i class="fa fa-fw fa-map-marker"></i> Lux Locator</a></li>
+		<li><a href="/"><i class="fa fa-fw fa-map-marker"></i> Lux Locator</a></li>
 		<li><a href="/airQuality"><i class="fa fa-fw fa-map-marker"></i> Air Quality</a></li>
-		<li><a href="/poi"><i class="fa fa-fw fa-map-marker"></i> POI</a></li>
-		<li class="active"><a href="/live"><i class="fa fa-fw fa-refresh"></i> Live</a></li>
+		<li class="active"><a href="/poi"><i class="fa fa-fw fa-map-marker"></i> POI</a></li>
+		<li><a href="/live"><i class="fa fa-fw fa-refresh"></i> Live</a></li>
 	</ul>
 </div>
 
+<div id="sidr">
+	<ul>
+		<li th:each="filter: ${filteringCriteria}">
+			<a href="#"><input type="checkbox" name="vehicle" class="checkbox" onchange="aggregateData()" th:id="${filter.filterType}" th:text="${filter.filterType}"/></a>
+		</li>
+	</ul>
+	<form>
+		<input type="text" placeholder="Search..." />
+	</form>
+	<h2>Sample heading</h2>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis sapien non nisi sodales pulvinar. Curabitur odio velit, porta sit amet lobortis sit amet, volutpat ut justo.</p>
+</div>
+
+<a id="simple-menu" class="menu-button" href="#sidr">Toggle menu</a>
 <div id="map"></div>
+<!--
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+-->
 
 <script th:src="@{https://code.jquery.com/jquery-1.12.4.js}"></script>
 
+<script src="jquery.sidr.js"/>
 <script src="geo.js"></script>
 <script th:async="async" th:defer="defer"
 				th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=initMap)}">
 </script>
 
-<script th:src="@{https://demo.api.tfl.lu/bundle.js}"></script>
-
 <script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
 	;(function($){
-		var api = new TfLAPIClient('https://api.tfl.lu/v1');
-		api.subscribe('/StopPoint/Departures', function(data) {
-			console.log("Departure: " + data);
+		$('#simple-menu').sidr({
+			timing: 'ease-in-out',
+			speed: 500
 		});
-
 	})(jQuery);
 	/*]]>*/
 </script>

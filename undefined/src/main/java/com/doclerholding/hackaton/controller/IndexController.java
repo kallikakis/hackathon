@@ -22,6 +22,13 @@ public class IndexController {
 		return "locator";
 	}
 
+	@RequestMapping("/poi")
+	public String poi(ModelMap modelMap) {
+		modelMap.addAttribute("filteringCriteria", searchService.getFilterCriteria());
+
+		return "poi";
+	}
+
 	@RequestMapping("/locator")
 	public String locator(ModelMap modelMap) {
 		modelMap.addAttribute("filteringCriteria", searchService.getFilterCriteria());

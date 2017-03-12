@@ -30,14 +30,14 @@ public class SearchController {
 	@Autowired
 	private ReverseGeocodeService reverseGeocodeService;
 
-	@RequestMapping(path="/search/pois", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path="/search/pois/boundedbox", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	List<Poi> getPois(@RequestParam double tlLat, @RequestParam double tlLon, @RequestParam double brLat, @RequestParam double brLon, @RequestParam String[] filters) {
 		GeoBox box = new GeoBox(new GeoPoint(tlLat, tlLon), new GeoPoint(brLat, brLon));
 		return this.searchService.getPois(box, Arrays.asList(filters));
 	}
 
-	@RequestMapping(path="/search/pois", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path="/search/pois/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	List<Poi> getPois(@RequestParam String address, @RequestParam double distanceKm, @RequestParam String[] filters) throws RestNotFoundException {
 		GeoPoint addressPoint = reverseGeocodeService.pointFromAddress(address);
@@ -47,7 +47,7 @@ public class SearchController {
 		return this.searchService.getPois(addressPoint, distanceKm, Arrays.asList(filters));
 	}
 
-	@RequestMapping(path="/search/pois", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path="/search/pois/pointinmap", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	List<Poi> getPois(@RequestParam double lat, @RequestParam double lon, @RequestParam double distanceKm, @RequestParam String[] filters) {
 		GeoPoint addressPoint = new GeoPoint(lat, lon);

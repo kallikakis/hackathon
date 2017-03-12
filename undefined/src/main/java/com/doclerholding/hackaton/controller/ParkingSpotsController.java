@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.doclerholding.hackaton.data.model.parking.ParkSpotDetail;
 import com.doclerholding.hackaton.service.DetailsService;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by claudiu.arba on 11/03/17.
@@ -19,7 +20,8 @@ public class ParkingSpotsController {
 	DetailsService detailsService;
 
 	@RequestMapping("/{id}")
-	protected ParkSpotDetail getDetailsById(@PathVariable String id) {
+	protected @ResponseBody
+	ParkSpotDetail getDetailsById(@PathVariable String id) {
 		return detailsService.getParkingDetail(id);
 	}
 }

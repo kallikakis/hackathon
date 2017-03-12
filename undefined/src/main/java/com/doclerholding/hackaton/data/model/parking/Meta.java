@@ -12,7 +12,7 @@ class Meta{
 	private Boolean elevator;
 	private String link;
 	private Address address;
-	private Integer phone;
+	private String phone;
 	@JsonProperty("reserved_for_disabled")
 	private Integer reservedForDisabled;
 	@JsonProperty("reserved_for_women")
@@ -59,11 +59,11 @@ class Meta{
 		this.address = address;
 	}
 
-	public Integer getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(Integer phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
