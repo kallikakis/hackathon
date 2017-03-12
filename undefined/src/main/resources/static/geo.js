@@ -322,18 +322,19 @@ var intersectData = function () {
     });
     markers = [];
 
-    jQuery('.checkbox').each(function () {
-        var checkbox = (this.checked ? jQuery(this) : null);
+	jQuery('.checkbox').each(function () {
+		document.getElementById("ext_"+this.id).style.display = this.checked ? 'block' : 'none';
+		var checkbox = (this.checked ? jQuery(this) : null);
 
-        if (checkbox != null) {
+		if (checkbox != null) {
 
-            if (!requestParams) {
-                requestParams = "types=" + checkbox.attr("id") + ":5";
-            } else {
-                requestParams = requestParams + "&types=" + checkbox.attr("id") + ":5";
-            }
-        }
-    })
+			if (!requestParams) {
+				requestParams = "types=" + checkbox.attr("id") + ":"+document.getElementById("distance_"+checkbox.attr("id")).value;
+			} else {
+				requestParams = requestParams + "&types=" + checkbox.attr("id")  + ":"+document.getElementById("distance_"+checkbox.attr("id")).value;
+			}
+		}
+	})
 
     jQuery.each(markers, function (key, circle) {
         circle.setMap(null);
