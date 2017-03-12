@@ -1,5 +1,11 @@
 package com.doclerholding.hackaton.service;
 
+import com.doclerholding.hackaton.data.loaders.IDataType;
+import com.doclerholding.hackaton.data.model.Poi;
+import com.doclerholding.hackaton.service.model.FilterCriteria;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
