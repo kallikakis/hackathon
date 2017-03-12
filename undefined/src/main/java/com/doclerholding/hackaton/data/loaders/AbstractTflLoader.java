@@ -18,7 +18,8 @@ public abstract class AbstractTflLoader implements IDataType {
 	@Autowired
 	private PoiRepository poiRepository;
 
-	protected void addPoint(JsonNode node, String pointType) {
+	protected long addPoint(JsonNode node, String pointType) {
+		long cnt = 0;
 		final List<Poi> data = new ArrayList<>();
 		JsonNode features = node.path("features");
 		for (JsonNode f : features) {
@@ -34,6 +35,8 @@ public abstract class AbstractTflLoader implements IDataType {
 			poi.setName(props.path("name").asText());
 			data.add(poi);
 			this.poiRepository.index(poi);
+			cnt++;
 		}
+		return cnt;
 	}
 }
