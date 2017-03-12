@@ -5,6 +5,7 @@ import com.doclerholding.hackaton.data.model.Poi;
 import com.doclerholding.hackaton.service.model.FilterCriteria;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,14 +19,7 @@ import org.springframework.data.elasticsearch.core.geo.GeoBox;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.data.geo.Box;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
 import org.springframework.stereotype.Component;
-
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 /**
  * Created by nikolaos.kallikakis on 11/03/17.
