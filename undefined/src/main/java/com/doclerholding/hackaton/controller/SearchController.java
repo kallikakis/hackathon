@@ -37,6 +37,12 @@ public class SearchController {
 		return this.searchService.getPois(box, Arrays.asList(filters));
 	}
 
+	@RequestMapping(path="/search/description/address", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	public @ResponseBody
+	String getAddressShortDescription(@RequestParam String address) {
+		return this.searchService.getPoiDescription(address);
+	}
+
 	@RequestMapping(path="/search/pois/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	List<Poi> getPois(@RequestParam String address, @RequestParam double distanceKm, @RequestParam String[] filters) throws RestNotFoundException {
