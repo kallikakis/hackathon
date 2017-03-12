@@ -1,5 +1,6 @@
 package com.doclerholding.hackaton;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,9 +23,15 @@ public class UndefinedApplication {
 		return new RestTemplate();
 	}
 
-	@Bean
-	public Map<String,IDataType> dataTypeMap(@Autowired List<IDataType> dataTypes) {
-		return dataTypes.stream().collect(Collectors.toMap(IDataType::dataType, x -> x));
+	@Bean("dataTypeMap")
+	public Map<String,IDataType> dataTypeMap(@Autowired List<IDataType> dataTypes){
+		Map<String, IDataType> dataTypeMap = new HashMap<>();
+
+		for(IDataType dataType : dataTypes) {
+			dataTypeMap.put(dataType.dataType(), dataType);
+		}
+
+		return dataTypeMap;
 	}
 
 	public static void main(String[] args) {

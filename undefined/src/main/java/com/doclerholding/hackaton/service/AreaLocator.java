@@ -134,7 +134,7 @@ public class AreaLocator implements IAreaLocator {
 			reaminFilters.remove(primaryFilter);
 			return this.getAreas(startPoints, primaryFilter.getRadiusKm() * DistanceUtils.KM_TO_DEG, reaminFilters);
 		}
-		return result.stream().map(x -> new LocatedArea(x.getLocation().getLat(), x.getLocation().getLon(), primaryFilter.getRadiusKm() * DistanceUtils.KM_TO_DEG)).collect(Collectors.toList());
+		return result.stream().map(x -> new LocatedArea(x.getLocation().getLat(), x.getLocation().getLon(), primaryFilter.getRadiusKm() * 1000)).collect(Collectors.toList());
 	}
 
 }

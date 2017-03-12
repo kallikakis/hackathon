@@ -1,4 +1,4 @@
-
+var arrows = {};
 function drawAirQualityZones() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -104,13 +104,6 @@ var $map;
 var markers = [];
 
 var intersectData = function() {
-	var bounds = $map.getBounds()
-	var topLeftLat = bounds.f.b;
-	var topLeftLon = bounds.b.b;
-
-	var bottomRightLat = bounds.f.f;
-	var bottomRightLon = bounds.b.f;
-
 	var requestParams = "";
 
 	jQuery.each(markers, function (key, marker) {
@@ -124,12 +117,18 @@ var intersectData = function() {
 		if (checkbox != null) {
 
 			if (!requestParams) {
-				requestParams = "types=" + checkbox.attr("id") + ":0.5";
+				requestParams = "types=" + checkbox.attr("id") + ":5";
 			} else {
-				requestParams = requestParams + "&types=" + checkbox.attr("id")  + ":0.5";
+				requestParams = requestParams + "&types=" + checkbox.attr("id")  + ":5";
 			}
 		}
 	})
+
+	jQuery.each(markers, function (key, circle) {
+		circle.setMap(null);
+	});
+
+	markers = [];
 
 	if (requestParams) {
 
@@ -140,15 +139,16 @@ var intersectData = function() {
 					var circledArea = {lat: area.lat, lng: area.lon};
 
 					var cityCircle = new google.maps.Circle({
-						strokeColor: '#FF0000',
+						strokeColor: '#00FF0C',
 						strokeOpacity: 0.8,
 						strokeWeight: 2,
-						fillColor: '#FF0000',
-						fillOpacity: 0.35,
+						fillColor: '#00FF0C',
+						fillOpacity: 0.15,
 						map: $map,
 						center: circledArea,
-						radius: data.radiusDeg
+						radius: area.radiusMeter
 					});
+					markers.push(cityCircle);
 				});
 		});
 	}
@@ -176,12 +176,22 @@ var aggregateData = function() {
 	})
 
 	if (requestParams) {
+		var bounds = $map.getBounds()
+		var topLeftLat = bounds.f.b;
+		var topLeftLon = bounds.b.b;
 
-		jQuery.getJSON("/search/pois?" + requestParams, function (data) {
+		var bottomRightLat = bounds.f.f;
+		var bottomRightLon = bounds.b.f;
+		requestParams = requestParams + "&tlLat=" + topLeftLat;
+		requestParams = requestParams + "&tlLon=" + topLeftLon;
+		requestParams = requestParams + "&brLat=" + bottomRightLat;
+		requestParams = requestParams + "&brLon=" + bottomRightLon;
+
+		jQuery.getJSON("/search/pois/boundedbox?" + requestParams, function (data) {
 
 			jQuery.each(data, function (key, $poi) {
 
-				var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+				var image = arrows[$poi.type];
 				var latLong = {lat: $poi.location.lat, lng: $poi.location.lon};
 
 				var marker = new google.maps.Marker({
@@ -190,6 +200,39 @@ var aggregateData = function() {
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					icon: image
 				});
+
+				if ($poi.type == "parking") {
+						console.log($poi.id);
+						marker.addListener('click', function() {
+							jQuery.getJSON("/parking/detail/" + $poi.id, function (data) {
+								console.log(data);
+								var contentString = '<div id="content">'+
+										'Total Spaces: ' + data.total + '</br>' +
+										'Free Spaces: ' + data.free + '</br>' +
+										'Open: ' + data.meta.open + '</br>' +
+										'Elevator: ' + data.meta.elevator + '</br>' +
+										'Phone: ' + data.meta.phone + '</br>' +
+										'Disabled lots: ' + data.meta.reserved_for_disabled + '</br>' +
+										'Motorbike lots: ' + data.meta.motorbike_lots + '</br>' +
+										'Bus lots: ' + data.meta.busLots + '</br>' +
+										'Bicycle docks: ' + data.meta.bicycle_docks + '</br>' +
+										'<b>Payment methods</b></br>' +
+										'Cash: ' + data.meta.payment_methods.cash + '</br>' +
+										'VPay: ' + data.meta.payment_methods.vpay + '</br>' +
+										'VISA: ' + data.meta.payment_methods.visa + '</br>' +
+										'Mastercard: ' + data.meta.payment_methods.mastercard + '</br>' +
+										'Eurocard: ' + data.meta.payment_methods.eurocard + '</br>' +
+										'AMEX: ' + data.meta.payment_methods.amex + '</br>' +
+										'Call2Park: ' + data.meta.payment_methods.call2park + '</br>' +
+										'</div>';
+
+								var infowindow = new google.maps.InfoWindow({
+									content: contentString
+								});
+								infowindow.open(map, marker);
+							});
+					});
+				}
 
 				marker.setMap($map);
 
@@ -206,4 +249,20 @@ function initMap() {
     center: {lat: 49.749601, lng: 6.157497},
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
+
+	// FIXME: Not the best pattern - just too tired to externalize :)
+
+	arrows['airquality'] = 'http://labs.google.com/ridefinder/images/mm_20_purple.png';
+	arrows['atm'] = 'http://labs.google.com/ridefinder/images/mm_20_yellow.png';
+	arrows['bank'] = 'http://labs.google.com/ridefinder/images/mm_20_blue.png';
+	arrows['cinema'] = 'http://labs.google.com/ridefinder/images/mm_20_white.png';
+	arrows['hospital'] = 'http://labs.google.com/ridefinder/images/mm_20_green.png';
+	arrows['library'] = 'http://labs.google.com/ridefinder/images/mm_20_red.png';
+	arrows['stop'] = 'http://labs.google.com/ridefinder/images/mm_20_black.png';
+	arrows['park'] = 'http://labs.google.com/ridefinder/images/mm_20_orange.png';
+	arrows['parking'] = 'http://labs.google.com/ridefinder/images/mm_20_gray.png';
+	arrows['playgound'] = 'http://labs.google.com/ridefinder/images/mm_20_brown.png';
+	arrows['school'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+	arrows['swimming'] = 'http://www.google.com/mapfiles/marker.png';
+	arrows['theatre'] = 'http://www.google.com/mapfiles/dd-start.png';
 }

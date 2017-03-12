@@ -1,81 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Boot and Thymeleaf example</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style>
-        html, body {
-					height: 100%;
-					margin: -0.
-					padding: -0.
-        }
-        #map {
-        	height: 100%;
-        }
+	<title>Spring Boot and Thymeleaf example</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<style>
+		html, body {
+			height: 100%;
+			margin: -0.
+			padding: -0.
+		}
 
-				.menuItem {
-					padding-top: 5px;
-					padding-bottom: 5px;
-				}
-    </style>
-		<link rel="stylesheet" type="text/css" href="/css/navigation.css"/>
-		<link rel="stylesheet" th:href="@{https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css}"/>
-		<link rel="stylesheet" th:href="@{/resources/demos/style.css}"/>
+		#map {
+			height: 100%;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="/css/navigation.css"/>
 
-		<meta name="viewport" content="width=device-width,minimum-scale=1"/>
-		<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/jquery.sidr/2.2.1/stylesheets/jquery.sidr.dark.min.css}"/>
+	<meta name="viewport" content="width=device-width,minimum-scale=1"/>
+	<link rel="stylesheet" type="text/css" th:href="@{https://cdn.jsdelivr.net/jquery.sidr/2.2.1/stylesheets/jquery.sidr.dark.min.css}"/>
 </head>
 <body>
 <div id="cssmenu">
 	<ul>
-		<li><a href="/"><i class="fa fa-fw fa-map-marker"></i> Lux Locator</a></li>
+		<li><a href="/locator"><i class="fa fa-fw fa-map-marker"></i> Lux Locator</a></li>
 		<li><a href="/airQuality"><i class="fa fa-fw fa-map-marker"></i> Air Quality</a></li>
 		<li><a href="/poi"><i class="fa fa-fw fa-map-marker"></i> POI</a></li>
 		<li class="active"><a href="/live"><i class="fa fa-fw fa-refresh"></i> Live</a></li>
 	</ul>
 </div>
 
-<div id="sidr">
-	<ul>
-		<li th:each="filter: ${filteringCriteria}">
-			<a href="#"><input type="checkbox" name="vehicle" th:value="${filter.filterType}" th:text="${filter.filterType}"/></a>
-		</li>
-	</ul>
-	<form>
-		<input type="text" placeholder="Search..." />
-	</form>
-	<h2>Sample heading</h2>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis sapien non nisi sodales pulvinar. Curabitur odio velit, porta sit amet lobortis sit amet, volutpat ut justo.</p>
-</div>
-
-<a id="simple-menu" class="menu-button" href="#sidr">Toggle menu</a>
 <div id="map"></div>
-<!--
-<script src="sockjs-0.3.4.js"></script>
-<script src="stomp.js"></script>
--->
 
 <script th:src="@{https://code.jquery.com/jquery-1.12.4.js}"></script>
-<script th:src="@{https://code.jquery.com/ui/1.12.1/jquery-ui.js}"></script>
-<!--<script th:src="@{https://code.jquery.com/jquery-1.12.0.min.js}"/>-->
-<script src="jquery.sidr.js"/>
+
 <script src="geo.js"></script>
 <script th:async="async" th:defer="defer"
-        th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=initMap)}">
+				th:src="@{https://maps.googleapis.com/maps/api/js(key=AIzaSyAF_oVDnSYouibZQfEx8wZqlApWbBjHt-A,callback=initMap)}">
 </script>
+
+<script th:src="@{https://demo.api.tfl.lu/bundle.js}"></script>
 
 <script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
 	;(function($){
-		$('#simple-menu').sidr({
-			timing: 'ease-in-out',
-			speed: 500
+		var api = new TfLAPIClient('https://api.tfl.lu/v1');
+		api.subscribe('/StopPoint/Departures', function(data) {
+			console.log("Departure: " + data);
 		});
-	})(jQuery);
 
-	$( function() {
-		$( "input" ).checkboxradio();
-	} );
+	})(jQuery);
 	/*]]>*/
 </script>
 
