@@ -103,7 +103,58 @@ function drawAirQualityZones() {
 var $map;
 var markers = [];
 
-var onchangeEvent = function() {
+var intersectData = function() {
+	var bounds = $map.getBounds()
+	var topLeftLat = bounds.f.b;
+	var topLeftLon = bounds.b.b;
+
+	var bottomRightLat = bounds.f.f;
+	var bottomRightLon = bounds.b.f;
+
+	var requestParams = "";
+
+	jQuery.each(markers, function (key, marker) {
+		marker.setMap(null);
+	});
+	markers = [];
+
+	jQuery('.checkbox').each(function () {
+		var checkbox = (this.checked ? jQuery(this) : null);
+
+		if (checkbox != null) {
+
+			if (!requestParams) {
+				requestParams = "types=" + checkbox.attr("id") + ":0.5";
+			} else {
+				requestParams = requestParams + "&types=" + checkbox.attr("id")  + ":0.5";
+			}
+		}
+	})
+
+	if (requestParams) {
+
+			jQuery.getJSON("/areas?" + requestParams, function (data) {
+
+				jQuery.each(data, function (key, area) {
+
+					var circledArea = {lat: area.lat, lng: area.lon};
+
+					var cityCircle = new google.maps.Circle({
+						strokeColor: '#FF0000',
+						strokeOpacity: 0.8,
+						strokeWeight: 2,
+						fillColor: '#FF0000',
+						fillOpacity: 0.35,
+						map: $map,
+						center: circledArea,
+						radius: data.radiusDeg
+					});
+				});
+		});
+	}
+};
+
+var aggregateData = function() {
 	var requestParams = "";
 
 	jQuery.each(markers, function (key, marker) {
@@ -126,7 +177,7 @@ var onchangeEvent = function() {
 
 	if (requestParams) {
 
-			jQuery.getJSON("/search/pois?" + requestParams, function (data) {
+		jQuery.getJSON("/search/pois?" + requestParams, function (data) {
 
 			jQuery.each(data, function (key, $poi) {
 
